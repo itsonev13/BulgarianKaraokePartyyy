@@ -16,15 +16,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BulgarianKaraokePartyyy">
-        <activity android:name=".AboutActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.Design.NoActionBar"></activity>
+
         <activity
             android:name=".RadioActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".PlayerActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Design.Light" />
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait"

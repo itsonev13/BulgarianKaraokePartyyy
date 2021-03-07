@@ -75,6 +75,7 @@
             </TextView>
 
             <SeekBar
+                android:thumbTint="@color/av_light_blue"
                 android:id="@+id/seekbars"
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
@@ -156,7 +157,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="30dp"
                 android:layout_toRightOf="@+id/btnff"
-                android:background="@drawable/ic_repeat_one">
+                android:background="@drawable/ic_repeat">
 
             </Button>
 

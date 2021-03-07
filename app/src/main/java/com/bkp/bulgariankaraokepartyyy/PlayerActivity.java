@@ -1,12 +1,18 @@
 package com.bkp.bulgariankaraokepartyyy;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.animation.AnimatorSet;
+import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -36,7 +42,7 @@ public class PlayerActivity extends AppCompatActivity {
     static MediaPlayer mediaPlayer;
     int position;
 
-    ArrayList<File> mySongs;
+   static  ArrayList<File> mySongs;
     Thread updateSeekbar;
 
     @Override
@@ -54,12 +60,13 @@ public class PlayerActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
-
-//        getSupportActionBar().setTitle("Now Playing");
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#FFD700")));
+        getSupportActionBar().setTitle("Now Playing");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         btnpause = findViewById(R.id.playbtn);
         btnnext = findViewById(R.id.btnnext);
@@ -96,6 +103,7 @@ public class PlayerActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
+
             }
         };
 
@@ -154,8 +162,9 @@ public class PlayerActivity extends AppCompatActivity {
         seekmusic.setMax(mediaPlayer.getDuration());
 
         updateSeekbar.start();
-        seekmusic.getProgressDrawable().setColorFilter(getResources().getColor(R.color.design_default_color_primary), PorterDuff.Mode.MULTIPLY);
-        seekmusic.getThumb().setColorFilter(getResources().getColor(R.color.design_default_color_primary),PorterDuff.Mode.SRC_IN);
+
+        seekmusic.getProgressDrawable().setColorFilter(getResources().getColor(R.color.av_light_blue), PorterDuff.Mode.MULTIPLY);
+        seekmusic.getThumb().setColorFilter(getResources().getColor(R.color.av_light_blue),PorterDuff.Mode.SRC_IN);
 
         seekmusic.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -205,12 +214,22 @@ public class PlayerActivity extends AppCompatActivity {
                 mediaPlayer = MediaPlayer.create(getApplicationContext(),u);
                 sname = mySongs.get(position).getName().toString();
                 txtsn.setText(sname);
+                seekmusic.setMax(mediaPlayer.getDuration());
+                seekmusic.setProgress(0);
                 mediaPlayer.start();
                 btnpause.setBackgroundResource(R.drawable.ic_pause);
                 startAnimation(imageView);
+                String endТime = createtime(mediaPlayer.getDuration());
+                txtsstop.setText(endТime);
                 int audioSessionId = mediaPlayer.getAudioSessionId();
                 if (audioSessionId != -1)
                     mVisualizer.setAudioSessionId(audioSessionId);
+                mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mp) {
+                        btnnext.performClick();
+                    }
+                });
             }
         });
 
@@ -225,9 +244,13 @@ public class PlayerActivity extends AppCompatActivity {
                 mediaPlayer = MediaPlayer.create(getApplicationContext(),u);
                 sname = mySongs.get(position).getName().toString();
                 txtsn.setText(sname);
+                seekmusic.setMax(mediaPlayer.getDuration());
+                seekmusic.setProgress(0);
                 mediaPlayer.start();
                 btnpause.setBackgroundResource(R.drawable.ic_pause);
-                startAnimation(imageView);
+                startAnimationl2r(imageView);
+                String endТime = createtime(mediaPlayer.getDuration());
+                txtsstop.setText(endТime);
                 int audioSessionId = mediaPlayer.getAudioSessionId();
                 if (audioSessionId != -1)
                     mVisualizer.setAudioSessionId(audioSessionId);
@@ -240,6 +263,7 @@ public class PlayerActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (mediaPlayer.isPlaying())
                 {
+                    startColorAnimation(v,btnff);
                     mediaPlayer.seekTo(mediaPlayer.getCurrentPosition()+10000);
                 }
             }
@@ -249,6 +273,7 @@ public class PlayerActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (mediaPlayer.isPlaying())
                 {
+                    startColorAnimation(v,btnfr);
                     mediaPlayer.seekTo(mediaPlayer.getCurrentPosition()-10000);
                 }
             }
@@ -298,6 +323,22 @@ public class PlayerActivity extends AppCompatActivity {
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.playTogether(animator);
         animatorSet.start();
+    }
+    public void startAnimationl2r(View view)
+    {
+        ObjectAnimator animator = ObjectAnimator.ofFloat(imageView, "rotation", 360f , 0f);
+        animator.setDuration(1000);
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.playTogether(animator);
+        animatorSet.start();
+    }
+    public void startColorAnimation(View view,Button btn){
+        ObjectAnimator animator = ObjectAnimator.ofFloat(btn, "alpha", 0.7f , 1f);
+        animator.setDuration(1000);
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.playTogether(animator);
+        animatorSet.start();
+
     }
 
     @Override

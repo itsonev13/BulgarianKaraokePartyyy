@@ -9,10 +9,13 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.Manifest;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.Html;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -122,6 +125,30 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View v) {
                 if (PlayerActivity.mediaPlayer!=null)
                 {
+                    for(int i=0 ;i<PlayerActivity.mySongs.size() ;i++) {
+                        if(PlayerActivity.mySongs.get(i).getName().equals(txtnp.getText().toString())) {
+                            PlayerActivity.mediaPlayer.stop();
+                            PlayerActivity.mediaPlayer.release();
+                            if(i== PlayerActivity.mySongs.size()-1){
+
+                                Uri u = Uri.parse(PlayerActivity.mySongs.get(0).toString());
+                                PlayerActivity.mediaPlayer = MediaPlayer.create(getApplicationContext(),u);
+                               String name = PlayerActivity.mySongs.get(0).getName().toString();
+                                txtnp.setText(name);
+                                PlayerActivity.mediaPlayer.start();
+                                return;
+                            }
+                            else{
+                                Uri u = Uri.parse(PlayerActivity.mySongs.get(i+1).toString());
+                                PlayerActivity.mediaPlayer = MediaPlayer.create(getApplicationContext(),u);
+                                String name = PlayerActivity.mySongs.get(i+1).getName().toString();
+                                txtnp.setText(name);
+                                PlayerActivity.mediaPlayer.start();
+                                return;
+
+                            }
+                        }
+                    }
 
                 }
             }
@@ -131,7 +158,30 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View v) {
                 if (PlayerActivity.mediaPlayer!=null)
                 {
+                    for(int i=0 ;i<PlayerActivity.mySongs.size() ;i++) {
+                        if(PlayerActivity.mySongs.get(i).getName().equals(txtnp.getText().toString())) {
+                            PlayerActivity.mediaPlayer.stop();
+                            PlayerActivity.mediaPlayer.release();
+                            if(i==0){
 
+                                Uri u = Uri.parse(PlayerActivity.mySongs.get(PlayerActivity.mySongs.size()-1).toString());
+                                PlayerActivity.mediaPlayer = MediaPlayer.create(getApplicationContext(),u);
+                                String name = PlayerActivity.mySongs.get(PlayerActivity.mySongs.size()-1).getName().toString();
+                                txtnp.setText(name);
+                                PlayerActivity.mediaPlayer.start();
+                                return;
+                            }
+                            else{
+                                Uri u = Uri.parse(PlayerActivity.mySongs.get(i-1).toString());
+                                PlayerActivity.mediaPlayer = MediaPlayer.create(getApplicationContext(),u);
+                                String name = PlayerActivity.mySongs.get(i-1).getName().toString();
+                                txtnp.setText(name);
+                                PlayerActivity.mediaPlayer.start();
+                                return;
+
+                            }
+                        }
+                    }
                 }
             }
         });
@@ -197,7 +247,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
                 String songName = (String) listView.getItemAtPosition(position);
                 String sname = mySongs.get(position).getName().toString();
                 startActivity(new Intent(getApplicationContext(),PlayerActivity.class)
@@ -258,10 +307,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Intent radiointent = new Intent(MainActivity.this,RadioActivity.class);
                 startActivity(radiointent);
                 Toast.makeText(this, "Radio here", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.portfolio:
-                Intent intent = new Intent(MainActivity.this,AboutActivity.class);
-                startActivity(intent);
                 break;
         }
         drawerLayout.closeDrawer(GravityCompat.START);
