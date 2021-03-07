@@ -28,9 +28,10 @@ import android.widget.Toast;
 import com.gauravk.audiovisualizer.visualizer.BlastVisualizer;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class PlayerActivity extends AppCompatActivity {
-    Button btnpause,btnprev,btnnext,btnff,btnfr,btnloop;
+    Button btnpause,btnprev,btnnext,btnff,btnfr,btnloop,btnshuff;
     TextView txtsn,txtsstart,txtsstop;
     SeekBar seekmusic;
     BlastVisualizer mVisualizer;
@@ -65,7 +66,7 @@ public class PlayerActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Now Playing");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-
+        btnshuff = findViewById(R.id.btnshuffle);
         btnpause = findViewById(R.id.playbtn);
         btnnext = findViewById(R.id.btnnext);
         btnprev = findViewById(R.id.btnprev);
@@ -179,6 +180,14 @@ public class PlayerActivity extends AppCompatActivity {
             public void onStopTrackingTouch(SeekBar seekBar) {
                 mediaPlayer.seekTo(seekBar.getProgress());
 
+            }
+        });
+        btnshuff.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Collections.shuffle(mySongs);
+                Toast.makeText(getApplicationContext(),"Suffling songs", Toast.LENGTH_SHORT).show();
             }
         });
 
