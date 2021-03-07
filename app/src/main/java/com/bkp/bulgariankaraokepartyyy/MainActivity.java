@@ -45,6 +45,11 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+//TODO Animation to change logo with text box
+//TODO Implement radio activity
+//TODO Implement Cloud storage
+//TODO Download files from cloud
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawerLayout;
     ListView listView;
