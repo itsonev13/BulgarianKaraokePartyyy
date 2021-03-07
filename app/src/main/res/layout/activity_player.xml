@@ -33,15 +33,36 @@
             android:textStyle="italic">
 
         </TextView>
+        <RelativeLayout
+            android:layout_width="300dp"
+            android:layout_height="300dp">
 
-        <ImageView
-            android:id="@+id/imageview"
-            android:layout_width="250dp"
-            android:layout_height="250dp"
-            android:layout_marginBottom="8dp"
-            android:src="@drawable/musix">
+            <com.gauravk.audiovisualizer.visualizer.BlastVisualizer
+                android:id="@+id/blastvisualizer"
 
-        </ImageView>
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="8dp"
+                app:avColor="@color/gold"
+                app:avDensity="0.5"
+                app:avSpeed="normal"
+                app:avType="outline"
+                app:avWidth="4dp" />
+
+            <ImageView
+                android:id="@+id/imageview"
+                android:layout_width="250dp"
+                android:layout_height="250dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="8dp"
+                android:foregroundGravity="center_vertical|center_horizontal"
+                android:paddingTop="30dp"
+                android:src="@drawable/musix">
+
+            </ImageView>
+
+        </RelativeLayout>
+
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -170,17 +191,6 @@
                 android:layout_toLeftOf="@+id/btnfr"
                 android:background="@drawable/ic_shuffle">
             </Button>
-
-            <com.gauravk.audiovisualizer.visualizer.BarVisualizer xmlns:custom="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/bar"
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:layout_alignParentBottom="true"
-                custom:avColor="#FF362E"
-                custom:avDensity="0.5"
-                custom:avSpeed="normal"
-                custom:avType="outline"
-                custom:avWidth="4dp" />
 
         </RelativeLayout>
 

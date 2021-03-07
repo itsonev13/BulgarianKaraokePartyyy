@@ -1,15 +1,15 @@
 package com.bkp.bulgariankaraokepartyyy;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.animation.AnimatorSet;
-import android.animation.ArgbEvaluator;
+
 import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
+
 import android.content.Intent;
-import android.content.res.ColorStateList;
+
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
@@ -23,10 +23,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.gauravk.audiovisualizer.visualizer.BarVisualizer;
-import com.gauravk.audiovisualizer.visualizer.CircleLineVisualizer;
-
+import com.gauravk.audiovisualizer.visualizer.BlastVisualizer;
 import java.io.File;
 import java.util.ArrayList;
 
@@ -34,7 +33,7 @@ public class PlayerActivity extends AppCompatActivity {
     Button btnpause,btnprev,btnnext,btnff,btnfr,btnloop;
     TextView txtsn,txtsstart,txtsstop;
     SeekBar seekmusic;
-    BarVisualizer mVisualizer;
+    BlastVisualizer mVisualizer;
     String sname;
     ImageView imageView;
     public static final String EXTRA_NAME = "song_name";
@@ -60,7 +59,6 @@ public class PlayerActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#FFD700")));
@@ -79,7 +77,7 @@ public class PlayerActivity extends AppCompatActivity {
         btnfr = findViewById(R.id.btnfr);
         btnloop = findViewById(R.id.btnloop);
 
-        mVisualizer = findViewById(R.id.bar);
+        mVisualizer = findViewById(R.id.blastvisualizer);
         imageView = findViewById(R.id.imageview);
 
 
@@ -287,11 +285,15 @@ public class PlayerActivity extends AppCompatActivity {
                     {
                         mediaPlayer.setLooping(false);
                         btnloop.setBackgroundResource(R.drawable.ic_repeat);
+
+                        Toast.makeText(getApplicationContext(),"Repeat off", Toast.LENGTH_SHORT).show();
+
                     }
                     else
                     {
                         mediaPlayer.setLooping(true);
                         btnloop.setBackgroundResource(R.drawable.ic_repeat_one);
+                        Toast.makeText(getApplicationContext(),"Repeat on", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -323,6 +325,12 @@ public class PlayerActivity extends AppCompatActivity {
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.playTogether(animator);
         animatorSet.start();
+
+        ObjectAnimator animator2 = ObjectAnimator.ofFloat(mVisualizer, "alpha", 0f , 1f);
+        animator2.setDuration(4000);
+        AnimatorSet animatorSet2 = new AnimatorSet();
+        animatorSet2.playTogether(animator2);
+        animatorSet2.start();
     }
     public void startAnimationl2r(View view)
     {
@@ -331,6 +339,12 @@ public class PlayerActivity extends AppCompatActivity {
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.playTogether(animator);
         animatorSet.start();
+
+        ObjectAnimator animator2 = ObjectAnimator.ofFloat(mVisualizer, "alpha", 0f , 1f);
+        animator2.setDuration(4000);
+        AnimatorSet animatorSet2 = new AnimatorSet();
+        animatorSet2.playTogether(animator2);
+        animatorSet2.start();
     }
     public void startColorAnimation(View view,Button btn){
         ObjectAnimator animator = ObjectAnimator.ofFloat(btn, "alpha", 0.7f , 1f);
