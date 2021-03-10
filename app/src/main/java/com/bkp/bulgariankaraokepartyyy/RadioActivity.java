@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import java.io.IOException;
 
@@ -17,8 +18,9 @@ public class RadioActivity extends AppCompatActivity {
     boolean prepared = false;
     boolean started = false;
 
-    String stream = "http://radio.net.bd/embed/foorti/";
+    String stream = "http://46.10.150.243/njoy.mp3";
     MediaPlayer mediaPlayer;
+    TextView txtFm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +28,8 @@ public class RadioActivity extends AppCompatActivity {
         setContentView(R.layout.activity_radio);
 
         btnradio = findViewById(R.id.btnradio);
+        txtFm = findViewById(R.id.txtfm);
+        txtFm.setText("106.9 FM");
         btnradio.setEnabled(false);
         btnradio.setText("Loading...");
 
@@ -39,18 +43,20 @@ public class RadioActivity extends AppCompatActivity {
                 {
                     started = false;
                     mediaPlayer.pause();
-                    btnradio.setText("Play");
+                    btnradio.setBackgroundResource(R.drawable.ic_play);
+
                 }
                 else
                 {
                     started = true;
                     mediaPlayer.start();
-                    btnradio.setText("Pause");
+                    btnradio.setBackgroundResource(R.drawable.ic_pause);
+
                 }
 
             }
-        });
 
+        });
     }
     class PlayerTask extends AsyncTask<String, Void, Boolean>
     {
@@ -71,7 +77,7 @@ public class RadioActivity extends AppCompatActivity {
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
             btnradio.setEnabled(true);
-            btnradio.setText("Play");
+            btnradio.setText("");
         }
     }
 

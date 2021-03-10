@@ -42,7 +42,7 @@ public class PlayerActivity extends AppCompatActivity {
     static MediaPlayer mediaPlayer;
     int position;
 
-   static  ArrayList<File> mySongs;
+    ArrayList<Song> mySongs;
     Thread updateSeekbar;
 
     @Override
@@ -51,7 +51,7 @@ public class PlayerActivity extends AppCompatActivity {
         if (item.getItemId()==android.R.id.home)
         {
             Intent mIntent=new Intent(PlayerActivity.this, MainActivity.class);
-            sname = mySongs.get(position).getName().toString();
+            sname = mySongs.get(position).getName();
             mIntent.putExtra(EXTRA_NAME, sname);
             startActivity(mIntent);
         }
@@ -102,6 +102,7 @@ public class PlayerActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
+                seekmusic.setProgress(0);
 
             }
         };
@@ -118,13 +119,13 @@ public class PlayerActivity extends AppCompatActivity {
 
         mySongs = (ArrayList) bundle.getParcelableArrayList("songs");
 
-        sname = mySongs.get(position).getName().toString();
+        sname = mySongs.get(position).getName();
         String songName = i.getStringExtra("songname");
         txtsn.setSelected(true);
 
         position = bundle.getInt("pos",0);
-        Uri uri = Uri.parse(mySongs.get(position).toString());
-        sname = mySongs.get(position).getName().toString();
+        Uri uri = Uri.parse(mySongs.get(position).getSource());
+        sname = mySongs.get(position).getName();
         txtsn.setText(sname);
 
         mediaPlayer = MediaPlayer.create(getApplicationContext(),uri);
@@ -217,9 +218,9 @@ public class PlayerActivity extends AppCompatActivity {
                 mediaPlayer.release();
                 position = ((position+1)%mySongs.size());
 
-                Uri u = Uri.parse(mySongs.get(position).toString());
+                Uri u = Uri.parse(mySongs.get(position).getSource());
                 mediaPlayer = MediaPlayer.create(getApplicationContext(),u);
-                sname = mySongs.get(position).getName().toString();
+                sname = mySongs.get(position).getName();
                 txtsn.setText(sname);
                 seekmusic.setMax(mediaPlayer.getDuration());
                 seekmusic.setProgress(0);
@@ -247,9 +248,9 @@ public class PlayerActivity extends AppCompatActivity {
                 mediaPlayer.release();
                 position = ((position-1)<0)?(mySongs.size()-1):(position-1);
 
-                Uri u = Uri.parse(mySongs.get(position).toString());
+                Uri u = Uri.parse(mySongs.get(position).getSource());
                 mediaPlayer = MediaPlayer.create(getApplicationContext(),u);
-                sname = mySongs.get(position).getName().toString();
+                sname = mySongs.get(position).getName();
                 txtsn.setText(sname);
                 seekmusic.setMax(mediaPlayer.getDuration());
                 seekmusic.setProgress(0);
