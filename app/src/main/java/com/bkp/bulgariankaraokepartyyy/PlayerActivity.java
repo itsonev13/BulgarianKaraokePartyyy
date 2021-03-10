@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.gauravk.audiovisualizer.visualizer.BlastVisualizer;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -100,6 +101,7 @@ public class PlayerActivity extends AppCompatActivity {
                     catch (InterruptedException | IllegalStateException e)
                     {
                         e.printStackTrace();
+
                     }
                 }
                 seekmusic.setProgress(0);
@@ -128,8 +130,21 @@ public class PlayerActivity extends AppCompatActivity {
         sname = mySongs.get(position).getName();
         txtsn.setText(sname);
 
-        mediaPlayer = MediaPlayer.create(getApplicationContext(),uri);
-        mediaPlayer.start();
+        mediaPlayer = new MediaPlayer();
+        try {
+            mediaPlayer.setDataSource(uri.toString());
+            mediaPlayer.prepareAsync();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                mediaPlayer.start();
+            }
+        });
+
+
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
@@ -214,28 +229,40 @@ public class PlayerActivity extends AppCompatActivity {
         btnnext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 mediaPlayer.stop();
                 mediaPlayer.release();
+                mediaPlayer = new MediaPlayer();
                 position = ((position+1)%mySongs.size());
 
                 Uri u = Uri.parse(mySongs.get(position).getSource());
-                mediaPlayer = MediaPlayer.create(getApplicationContext(),u);
-                sname = mySongs.get(position).getName();
-                txtsn.setText(sname);
-                seekmusic.setMax(mediaPlayer.getDuration());
-                seekmusic.setProgress(0);
-                mediaPlayer.start();
-                btnpause.setBackgroundResource(R.drawable.ic_pause);
-                startAnimation(imageView);
-                String endТime = createtime(mediaPlayer.getDuration());
-                txtsstop.setText(endТime);
-                int audioSessionId = mediaPlayer.getAudioSessionId();
-                if (audioSessionId != -1)
-                    mVisualizer.setAudioSessionId(audioSessionId);
-                mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                try {
+                    mediaPlayer.setDataSource(u.toString());
+                    mediaPlayer.prepareAsync();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                     @Override
-                    public void onCompletion(MediaPlayer mp) {
-                        btnnext.performClick();
+                    public void onPrepared(MediaPlayer mp) {
+                        sname = mySongs.get(position).getName();
+                        txtsn.setText(sname);
+                        seekmusic.setMax(mediaPlayer.getDuration());
+                        seekmusic.setProgress(0);
+                        mediaPlayer.start();
+                        btnpause.setBackgroundResource(R.drawable.ic_pause);
+                        startAnimation(imageView);
+                        String endТime = createtime(mediaPlayer.getDuration());
+                        txtsstop.setText(endТime);
+                        int audioSessionId = mediaPlayer.getAudioSessionId();
+                        if (audioSessionId != -1)
+                            mVisualizer.setAudioSessionId(audioSessionId);
+                        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                            @Override
+                            public void onCompletion(MediaPlayer mp) {
+                                btnnext.performClick();
+                            }
+                        });
                     }
                 });
             }
@@ -249,20 +276,31 @@ public class PlayerActivity extends AppCompatActivity {
                 position = ((position-1)<0)?(mySongs.size()-1):(position-1);
 
                 Uri u = Uri.parse(mySongs.get(position).getSource());
-                mediaPlayer = MediaPlayer.create(getApplicationContext(),u);
-                sname = mySongs.get(position).getName();
-                txtsn.setText(sname);
-                seekmusic.setMax(mediaPlayer.getDuration());
-                seekmusic.setProgress(0);
-                mediaPlayer.start();
-                btnpause.setBackgroundResource(R.drawable.ic_pause);
-                startAnimationl2r(imageView);
-                String endТime = createtime(mediaPlayer.getDuration());
-                txtsstop.setText(endТime);
-                int audioSessionId = mediaPlayer.getAudioSessionId();
-                if (audioSessionId != -1)
-                    mVisualizer.setAudioSessionId(audioSessionId);
-
+              //  mediaPlayer = MediaPlayer.create(getApplicationContext(),u);
+                mediaPlayer = new MediaPlayer();
+                try {
+                    mediaPlayer.setDataSource(u.toString());
+                    mediaPlayer.prepareAsync();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                    @Override
+                    public void onPrepared(MediaPlayer mp) {
+                        sname = mySongs.get(position).getName();
+                        txtsn.setText(sname);
+                        seekmusic.setMax(mediaPlayer.getDuration());
+                        seekmusic.setProgress(0);
+                        mediaPlayer.start();
+                        btnpause.setBackgroundResource(R.drawable.ic_pause);
+                        startAnimationl2r(imageView);
+                        String endТime = createtime(mediaPlayer.getDuration());
+                        txtsstop.setText(endТime);
+                        int audioSessionId = mediaPlayer.getAudioSessionId();
+                        if (audioSessionId != -1)
+                            mVisualizer.setAudioSessionId(audioSessionId);
+                    }
+                });
             }
         });
 
