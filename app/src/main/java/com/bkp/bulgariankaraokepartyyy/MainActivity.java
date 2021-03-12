@@ -106,6 +106,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 else
                 {
                     Intent mIntent=new Intent(MainActivity.this, PlayerActivity.class);
+                    mIntent.putExtra("mainActivitySongName",txtnp.getText().toString());
                     mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     mIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     startActivity(mIntent);

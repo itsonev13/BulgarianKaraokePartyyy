@@ -46,6 +46,7 @@ public class PlayerActivity extends AppCompatActivity {
     ArrayList<Song> mySongs;
     Thread updateSeekbar;
 
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
@@ -55,9 +56,50 @@ public class PlayerActivity extends AppCompatActivity {
             sname = mySongs.get(position).getName();
             mIntent.putExtra(EXTRA_NAME, sname);
             startActivity(mIntent);
+
+
+                updateSeekbar.interrupt();
+
         }
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        String name = intent.getStringExtra("mainActivitySongName");
+        txtsn.setText(name);
+        String endtime = createtime(mediaPlayer.getDuration());
+        txtsstop.setText(endtime);
+
+        updateSeekbar = new Thread()
+        {
+            @Override
+            public void run() {
+                int totalDuration = mediaPlayer.getDuration();
+                int currentPosition = 0;
+
+                while (currentPosition<totalDuration && !Thread.interrupted())
+                {
+                    try {
+                        sleep(500);
+                        currentPosition = mediaPlayer.getCurrentPosition();
+                        seekmusic.setProgress(currentPosition);
+                    }
+                    catch (InterruptedException | IllegalStateException e)
+                    {
+                        e.printStackTrace();
+
+                    }
+                }
+                seekmusic.setProgress(0);
+
+            }
+        };
+        updateSeekbar.start();
+
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +133,7 @@ public class PlayerActivity extends AppCompatActivity {
                 int totalDuration = mediaPlayer.getDuration();
                 int currentPosition = 0;
 
-                while (currentPosition<totalDuration)
+                while (currentPosition<totalDuration && !Thread.interrupted())
                 {
                     try {
                         sleep(500);
@@ -130,19 +172,8 @@ public class PlayerActivity extends AppCompatActivity {
         sname = mySongs.get(position).getName();
         txtsn.setText(sname);
 
-        mediaPlayer = new MediaPlayer();
-        try {
-            mediaPlayer.setDataSource(uri.toString());
-            mediaPlayer.prepareAsync();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mp) {
-                mediaPlayer.start();
-            }
-        });
+        mediaPlayer = MediaPlayer.create(getApplicationContext(),uri);
+        mediaPlayer.start();
 
 
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
