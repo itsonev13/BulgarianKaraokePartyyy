@@ -67,10 +67,22 @@ public class PlayerActivity extends AppCompatActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         String name = intent.getStringExtra("mainActivitySongName");
+        position = intent.getIntExtra("pos",0);
         txtsn.setText(name);
         String endtime = createtime(mediaPlayer.getDuration());
         seekmusic.setMax(mediaPlayer.getDuration());
         txtsstop.setText(endtime);
+        //visualizer
+        int audioSessionId = mediaPlayer.getAudioSessionId();
+        if (audioSessionId != -1)
+            mVisualizer.setAudioSessionId(audioSessionId);
+        //
+        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                btnnext.performClick();
+            }
+        });
         updateSeekbar = new Thread()
         {
             @Override

@@ -107,6 +107,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 {
                     Intent mIntent=new Intent(MainActivity.this, PlayerActivity.class);
                     mIntent.putExtra("mainActivitySongName",txtnp.getText().toString());
+                    mIntent.putExtra("pos",position);
                     mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     mIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     startActivity(mIntent);
@@ -152,6 +153,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                String name = mySongs.get(0).getName();
                                 txtnp.setText(name);
                                 PlayerActivity.mediaPlayer.start();
+                                position=0;
                                 return;
                             }
                             else{
@@ -160,6 +162,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                 String name = mySongs.get(i+1).getName();
                                 txtnp.setText(name);
                                 PlayerActivity.mediaPlayer.start();
+                                position=i+1;
                                 return;
 
                             }
@@ -185,6 +188,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                 String name = mySongs.get(mySongs.size()-1).getName();
                                 txtnp.setText(name);
                                 PlayerActivity.mediaPlayer.start();
+                                position=mySongs.size()-1;
                                 return;
                             }
                             else{
@@ -193,6 +197,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                 String name = mySongs.get(i-1).getName();
                                 txtnp.setText(name);
                                 PlayerActivity.mediaPlayer.start();
+                                position=i-1;
                                 return;
 
                             }
