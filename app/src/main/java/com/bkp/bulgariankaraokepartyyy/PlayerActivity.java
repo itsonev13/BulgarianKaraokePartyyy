@@ -45,6 +45,7 @@ public class PlayerActivity extends AppCompatActivity {
 
     ArrayList<Song> mySongs;
     Thread updateSeekbar;
+    static boolean updateIsStoped= false;
 
 
     @Override
@@ -56,9 +57,7 @@ public class PlayerActivity extends AppCompatActivity {
             sname = mySongs.get(position).getName();
             mIntent.putExtra(EXTRA_NAME, sname);
             startActivity(mIntent);
-
-
-                updateSeekbar.interrupt();
+            updateIsStoped = true ;
 
         }
         return super.onOptionsItemSelected(item);
@@ -71,18 +70,19 @@ public class PlayerActivity extends AppCompatActivity {
         txtsn.setText(name);
         String endtime = createtime(mediaPlayer.getDuration());
         txtsstop.setText(endtime);
-
         updateSeekbar = new Thread()
         {
             @Override
             public void run() {
                 int totalDuration = mediaPlayer.getDuration();
                 int currentPosition = 0;
-
-                while (currentPosition<totalDuration && !Thread.interrupted())
+                updateIsStoped= false;
+                while (currentPosition<totalDuration )
                 {
                     try {
                         sleep(500);
+                        if(updateIsStoped)
+                            break;
                         currentPosition = mediaPlayer.getCurrentPosition();
                         seekmusic.setProgress(currentPosition);
                     }
@@ -93,7 +93,7 @@ public class PlayerActivity extends AppCompatActivity {
                     }
                 }
                 seekmusic.setProgress(0);
-
+                updateIsStoped=false;
             }
         };
         updateSeekbar.start();
@@ -125,7 +125,6 @@ public class PlayerActivity extends AppCompatActivity {
         imageView = findViewById(R.id.imageview);
 
 
-
         updateSeekbar = new Thread()
         {
             @Override
@@ -133,10 +132,12 @@ public class PlayerActivity extends AppCompatActivity {
                 int totalDuration = mediaPlayer.getDuration();
                 int currentPosition = 0;
 
-                while (currentPosition<totalDuration && !Thread.interrupted())
+                while (currentPosition<totalDuration)
                 {
                     try {
                         sleep(500);
+                        if(updateIsStoped)
+                            break;
                         currentPosition = mediaPlayer.getCurrentPosition();
                         seekmusic.setProgress(currentPosition);
                     }
@@ -147,7 +148,7 @@ public class PlayerActivity extends AppCompatActivity {
                     }
                 }
                 seekmusic.setProgress(0);
-
+                updateIsStoped=false;
             }
         };
 
