@@ -80,7 +80,7 @@ public class PlayerActivity extends AppCompatActivity {
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
-                btnnext.performClick();
+                btnnext.performClick(); seekmusic.setProgress(0);
             }
         });
         updateSeekbar = new Thread()
