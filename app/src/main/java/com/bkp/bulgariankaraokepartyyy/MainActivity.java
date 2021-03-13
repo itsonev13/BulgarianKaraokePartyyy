@@ -15,7 +15,9 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.Editable;
 import android.text.Html;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -25,6 +27,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
@@ -46,9 +49,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 //TODO Animation to change logo with text box
-//TODO Implement radio activity
-//TODO Implement Cloud storage
-//TODO Download files from cloud
+
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawerLayout;
@@ -56,7 +57,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     ListView listView;
     String[] items;
     Button hbtnnext,hbtnprev,hbtnpause;
-    TextView txtnp;
+    ImageButton searchBtn;
+    TextView txtnp,searchQuery;
     customAdapter customAdapter = new customAdapter();
     int position;
    public static ArrayList<Song>  mySongs;
@@ -71,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
@@ -80,11 +83,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         listView = findViewById(R.id.listviewsongs);
         txtnp = findViewById(R.id.txtnp);
 
+
         runtimepermission();
 
         hbtnnext = findViewById(R.id.hbtnnext);
         hbtnprev = findViewById(R.id.hbtnprev);
         hbtnpause = findViewById(R.id.hbtnpause);
+        searchBtn = findViewById(R.id.SearchBtn);
+        searchQuery = findViewById(R.id.SearchBox);
 
 
         if(PlayerActivity.mediaPlayer!=null) {
@@ -96,6 +102,46 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
             });
         }
+        searchBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String query =searchQuery.getText().toString();
+                List<Song> songs = db.getSongsByName(query);
+                mySongs= (ArrayList)songs;
+                items = new String[songs.size()];
+                for (int i=0;i<songs.size();i++)
+                {
+                    items[i] = songs.get(i).getName();
+                }
+
+                customAdapter.notifyDataSetChanged();
+
+            }
+        });
+        searchQuery.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s.toString().equals("")){
+                    items = new String[mySongs.size()];
+                    for (int i=0;i<mySongs.size();i++)
+                    {
+                        items[i] = mySongs.get(i).getName();
+                    }
+
+                    customAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         txtnp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -290,15 +336,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId())
         {
-            case R.id.navalbums:
-                Toast.makeText(this, "Albums here", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.navartists:
-                Toast.makeText(this, "Artists here", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.navsongs:
-                Toast.makeText(this, "All songs here", Toast.LENGTH_SHORT).show();
-                break;
+
             case R.id.navonline:
                 download();
                 Toast.makeText(this, "Online Library here", Toast.LENGTH_SHORT).show();
