@@ -69,6 +69,7 @@ public class PlayerActivity extends AppCompatActivity {
         String name = intent.getStringExtra("mainActivitySongName");
         txtsn.setText(name);
         String endtime = createtime(mediaPlayer.getDuration());
+        seekmusic.setMax(mediaPlayer.getDuration());
         txtsstop.setText(endtime);
         updateSeekbar = new Thread()
         {
