@@ -85,29 +85,31 @@ public class PlayerActivity extends AppCompatActivity {
             }
         });
         updateSeekbar = new Thread() {
+
             @Override
             public void run() {
                 int totalDuration = mediaPlayer.getDuration();
                 int currentPosition = 0;
                 updateIsStoped = false;
-                while (currentPosition < totalDuration) {
-                    try {
-                        sleep(500);
-                        if (updateIsStoped)
-                            break;
-                        currentPosition = mediaPlayer.getCurrentPosition();
-                        seekmusic.setProgress(currentPosition);
-                    } catch (InterruptedException | IllegalStateException e) {
-                        e.printStackTrace();
 
-                    }
-                }
-                seekmusic.setProgress(0);
-                updateIsStoped = false;
+//                while (currentPosition < totalDuration) {
+//                    try {
+//                        sleep(500);
+//                        if (updateIsStoped)
+//                            break;
+//                        currentPosition = mediaPlayer.getCurrentPosition();
+//                        seekmusic.setProgress(currentPosition);
+//                    } catch (InterruptedException | IllegalStateException e) {
+//                        e.printStackTrace();
+//
+//                    }
+//                }
+//                seekmusic.setProgress(0);
+//                updateIsStoped = false;
             }
         };
-        updateSeekbar.start();
 
+        updateSeekbar.start();
     }
 
 
@@ -115,10 +117,12 @@ public class PlayerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
+
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#FFD700")));
         getSupportActionBar().setTitle("Now Playing");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         btnshuff = findViewById(R.id.btnshuffle);
         btnpause = findViewById(R.id.playbtn);
         btnnext = findViewById(R.id.btnnext);
@@ -141,20 +145,20 @@ public class PlayerActivity extends AppCompatActivity {
                 int totalDuration = mediaPlayer.getDuration();
                 int currentPosition = 0;
 
-                while (currentPosition < totalDuration) {
-                    try {
-                        sleep(500);
-                        if (updateIsStoped)
-                            break;
-                        currentPosition = mediaPlayer.getCurrentPosition();
-                        seekmusic.setProgress(currentPosition);
-                    } catch (InterruptedException | IllegalStateException e) {
-                        e.printStackTrace();
-
-                    }
-                }
-                seekmusic.setProgress(0);
-                updateIsStoped = false;
+//                while (currentPosition < totalDuration) {
+//                    try {
+//                        sleep(500);
+//                        if (updateIsStoped)
+//                            break;
+//                        currentPosition = mediaPlayer.getCurrentPosition();
+//                        seekmusic.setProgress(currentPosition);
+//                    } catch (InterruptedException | IllegalStateException e) {
+//                        e.printStackTrace();
+//
+//                    }
+//                }
+//                seekmusic.setProgress(0);
+//                updateIsStoped = false;
             }
         };
 
@@ -167,7 +171,7 @@ public class PlayerActivity extends AppCompatActivity {
         Intent i = getIntent();
         Bundle bundle = i.getExtras();
 
-        mySongs = (ArrayList) bundle.getParcelableArrayList("songs");
+        mySongs = new ArrayList<Song>( bundle.getParcelableArrayList("songs"));
 
         sname = mySongs.get(position).getName();
         String songName = i.getStringExtra("songname");
@@ -204,8 +208,8 @@ public class PlayerActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             public void run() {
                 //do something
-                String currenttime = createtime(mediaPlayer.getCurrentPosition());
-                txtsstart.setText(currenttime);
+//                String currenttime = createtime(mediaPlayer.getCurrentPosition());
+                txtsstart.setText("3");
                 handler.postDelayed(this, delay);
             }
         }, delay);
@@ -379,19 +383,22 @@ public class PlayerActivity extends AppCompatActivity {
     }
 
     public boolean onTouchEvent(MotionEvent touchEvent) {
-        switch (touchEvent.getAction()) {
-            case MotionEvent.ACTION_UP:
-                float x1 = touchEvent.getX();
-                float y1 = touchEvent.getY();
+        float x1 = touchEvent.getX();
+        float y1 = touchEvent.getY();
 
-               if (x1 < y1) {
-                    //Right
-                    Intent i = new Intent(PlayerActivity.this, KaraokeActivity.class);
-                   startActivity(i);
-                   this.overridePendingTransition(R.anim.swipe_left_animation_enter, R.anim.swipe_left_animation_leave);
-               }
+        if(touchEvent.getAction() == MotionEvent.ACTION_UP) {
+            if (x1 < y1) {
+                //Left
+                Intent i = new Intent(PlayerActivity.this, KaraokeActivity.class)
+                        .putExtra("songs", mySongs)
+                        .putExtra("songname", "Nqkvo ime")
+                        .putExtra("pos", 1);
 
-                break;
+                startActivity(i);
+                this.overridePendingTransition(R.anim.swipe_left_animation_enter, R.anim.swipe_left_animation_leave);
+
+                return true;
+            }
         }
 
         return false;

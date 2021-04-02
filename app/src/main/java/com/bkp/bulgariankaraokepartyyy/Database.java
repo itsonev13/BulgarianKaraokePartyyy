@@ -19,7 +19,7 @@ public class Database extends SQLiteOpenHelper {
     private static final String KEY_ID = "id";
     private static final String KEY_NAME = "name";
     private static final String KEY_SOURCE = "source";
-    private static final String KEY_LYRICS = "lyric";
+    private static final String KEY_LYRICS = "lyrics";
 
     // Създаване на Таблицата
     // Създаване на Таблицата
@@ -139,10 +139,6 @@ public class Database extends SQLiteOpenHelper {
         // Връщане на броя
         return cursor.getCount();
     }
-
-
-
-
 
     public Database(Context context){
         super(context,DATABASE_NAME,null,DATABASE_VERSION);

@@ -9,7 +9,7 @@ public class Song implements Parcelable {
     private String name;
     private String source;
     private String lyrics;
-    ;
+
 
     public Song(){
 
