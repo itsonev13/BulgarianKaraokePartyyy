@@ -28,7 +28,6 @@ import android.widget.Toast;
 
 import com.gauravk.audiovisualizer.visualizer.BlastVisualizer;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -385,11 +384,13 @@ public class PlayerActivity extends AppCompatActivity {
                 float x1 = touchEvent.getX();
                 float y1 = touchEvent.getY();
 
-                if (x1 < y1) {
-                    Intent i = new Intent(PlayerActivity.this, MainActivity.class);
-                    startActivity(i);
-                }
-                
+               if (x1 < y1) {
+                    //Right
+                    Intent i = new Intent(PlayerActivity.this, KaraokeActivity.class);
+                   startActivity(i);
+                   this.overridePendingTransition(R.anim.swipe_left_animation_enter, R.anim.swipe_left_animation_leave);
+               }
+
                 break;
         }
 

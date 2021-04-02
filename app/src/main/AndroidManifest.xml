@@ -26,6 +26,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Design.Light" />
         <activity
+            android:name=".KaraokeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Design.Light" />
+        <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Design.NoActionBar">
