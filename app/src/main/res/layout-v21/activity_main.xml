@@ -2,10 +2,10 @@
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/mxhbg"
-    android:id="@+id/drawer_layout"
     android:fitsSystemWindows="true"
     tools:context=".MainActivity"
     tools:openDrawer="start">
@@ -23,18 +23,20 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/gold"
             android:elevation="4dp"
-            android:textSize="30dp">
+            android:textSize="30sp"
+            tools:targetApi="lollipop">
 
             <EditText
                 android:id="@+id/SearchBox"
                 android:layout_width="250dp"
                 android:layout_height="match_parent"
                 android:hint="Search Song"
-                android:textColor="#333333"
-                android:maxLines="1"
                 android:inputType="text"
+                android:maxLines="1"
+                android:textColor="#333333"
                 android:textColorHint="#333333"
-                android:textSize="24sp">
+                android:textSize="24sp"
+                android:autofillHints="">
 
             </EditText>
 
@@ -43,8 +45,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"
-                android:src="@android:drawable/ic_menu_search"
-                android:contentDescription="@string/app_name" />
+                android:contentDescription="@string/app_name"
+                android:src="@android:drawable/ic_menu_search" />
 
 
         </androidx.appcompat.widget.Toolbar>
@@ -77,7 +79,7 @@
                 android:layout_height="50dp"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="10dp"
-                android:layout_toLeftOf="@+id/btnNextMain"
+                android:layout_toStartOf="@+id/btnNextMain"
                 android:background="@drawable/ic_play_circle">
 
             </Button>
@@ -99,7 +101,7 @@
                 android:layout_height="40dp"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="10dp"
-                android:layout_toLeftOf="@+id/btnPauseMain"
+                android:layout_toStartOf="@+id/btnPauseMain"
                 android:background="@drawable/ic_prev">
 
             </Button>
@@ -108,7 +110,7 @@
                 android:id="@+id/bottomPanelMain"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_toLeftOf="@+id/btnPreviousMain"
+                android:layout_toStartOf="@+id/btnPreviousMain"
                 android:ellipsize="marquee"
                 android:marqueeRepeatLimit="marquee_forever"
                 android:padding="10dp"
@@ -123,11 +125,12 @@
 
         </RelativeLayout>
     </LinearLayout>
+
     <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:id="@+id/nav_view"
         app:headerLayout="@layout/nav_header"
         app:menu="@menu/drawer_menu">
 

@@ -21,7 +21,7 @@ public class KaraokeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.karaoke_main);
+        setContentView(R.layout.activity_karakoke);
 
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#7453C8")));
         getSupportActionBar().setTitle("Now Playing");

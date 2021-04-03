@@ -80,7 +80,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         searchBtn = findViewById(R.id.SearchBtn);
         searchQuery = findViewById(R.id.SearchBox);
 
-
         if (PlayerActivity.mediaPlayer != null) {
             PlayerActivity.mediaPlayer.setOnCompletionListener(mediaPlayer -> btnNext.performClick());
         }
@@ -236,7 +235,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             //String sname = mySongs.get(position).getName();
             startActivity(new Intent(getApplicationContext(), PlayerActivity.class)
                     .putExtra("songs", mySongs)
-                    .putExtra("songname", songName)
+                    .putExtra("songName", songName)
                     .putExtra("pos", position));
         });
     }

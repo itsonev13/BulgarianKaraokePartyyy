@@ -16,7 +16,7 @@
         android:gravity="center"
         android:orientation="vertical">
         <TextView
-            android:id="@+id/txtsn"
+            android:id="@+id/txtSongName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
@@ -38,7 +38,7 @@
             android:layout_height="300dp">
 
             <com.gauravk.audiovisualizer.visualizer.BlastVisualizer
-                android:id="@+id/blastvisualizer"
+                android:id="@+id/blastVisualizer"
 
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -50,7 +50,7 @@
                 app:avWidth="4dp" />
 
             <ImageView
-                android:id="@+id/imageview"
+                android:id="@+id/imageView"
                 android:layout_width="258dp"
                 android:layout_height="247dp"
                 android:layout_centerHorizontal="true"
@@ -69,10 +69,10 @@
             android:layout_height="60dp">
 
             <TextView
-                android:id="@+id/txtsstart"
+                android:id="@+id/txtSongStart"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toLeftOf="@+id/seekbars"
+                android:layout_toLeftOf="@+id/seekBars"
                 android:layout_centerInParent="true"
                 android:layout_alignParentLeft="false"
                 android:layout_marginLeft="20dp"
@@ -83,10 +83,10 @@
             </TextView>
 
             <TextView
-                android:id="@+id/txtsstop"
+                android:id="@+id/txtSongStop"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/seekbars"
+                android:layout_toRightOf="@+id/seekBars"
                 android:layout_centerInParent="true"
                 android:layout_alignParentRight="false"
                 android:text=""
@@ -97,7 +97,7 @@
 
             <SeekBar
                 android:thumbTint="@color/av_light_blue"
-                android:id="@+id/seekbars"
+                android:id="@+id/seekBars"
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
@@ -121,7 +121,7 @@
             android:padding="5dp">
 
             <Button
-                android:id="@+id/playbtn"
+                android:id="@+id/btnPlayPlayer"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:layout_centerHorizontal="true"
@@ -130,65 +130,65 @@
             </Button>
 
             <Button
-                android:id="@+id/btnnext"
+                android:id="@+id/btnNextPlayer"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginTop="15dp"
-                android:layout_toRightOf="@+id/playbtn"
+                android:layout_toRightOf="@+id/btnPlayPlayer"
                 android:background="@drawable/ic_next">
 
             </Button>
 
             <Button
-                android:id="@+id/btnff"
+                android:id="@+id/btnFForwardPlayer"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="20dp"
-                android:layout_toRightOf="@+id/btnnext"
+                android:layout_toRightOf="@+id/btnNextPlayer"
                 android:background="@drawable/ic_fast_forward">
 
             </Button>
 
             <Button
-                android:id="@+id/btnfr"
+                android:id="@+id/btnFReversePlayer"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginRight="15dp"
-                android:layout_toLeftOf="@+id/btnprev"
+                android:layout_toLeftOf="@+id/btnPrevious"
                 android:background="@drawable/ic_fast_rewind">
 
             </Button>
 
             <Button
-                android:id="@+id/btnprev"
+                android:id="@+id/btnPrevious"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginTop="15dp"
-                android:layout_toLeftOf="@+id/playbtn"
+                android:layout_toLeftOf="@+id/btnPlayPlayer"
                 android:background="@drawable/ic_prev">
 
             </Button>
 
             <Button
-                android:id="@+id/btnloop"
+                android:id="@+id/btnLoop"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="30dp"
-                android:layout_toRightOf="@+id/btnff"
+                android:layout_toRightOf="@+id/btnFForwardPlayer"
                 android:background="@drawable/ic_repeat">
 
             </Button>
 
             <Button
-                android:id="@+id/btnshuffle"
+                android:id="@+id/btnShuffle"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginTop="30dp"
                 android:layout_marginRight="10dp"
-                android:layout_toLeftOf="@+id/btnfr"
+                android:layout_toLeftOf="@+id/btnFReversePlayer"
                 android:background="@drawable/ic_shuffle">
             </Button>
 
