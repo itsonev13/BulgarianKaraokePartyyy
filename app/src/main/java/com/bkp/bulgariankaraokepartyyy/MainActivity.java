@@ -10,7 +10,6 @@ import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -37,72 +36,68 @@ import java.util.List;
 
 //TODO Animation to change logo with text box
 
-
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    private final Database db = new Database(this);
+    private final customAdapter customAdapter = new customAdapter();
+
     private DrawerLayout drawerLayout;
-    final Database db = new Database(this);
-    ListView listView;
-    String[] items;
-    Button hbtnnext, hbtnprev, hbtnpause;
-    ImageButton searchBtn;
-    TextView txtnp, searchQuery;
-    customAdapter customAdapter = new customAdapter();
-    int position;
-    public static ArrayList<Song> mySongs;
+    private ListView listView;
+    private String[] items;
+    private Button btnNext, btnPrevious, btnPause;
+    private ImageButton searchBtn;
+    private TextView bottomPanel, searchQuery;
+    private int position;
+    private static ArrayList<Song> mySongs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mySongs = db.getAllSongs();
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        drawerLayout = findViewById(R.id.drawer_layout);
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        drawerLayout = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        listView = findViewById(R.id.listviewsongs);
-        txtnp = findViewById(R.id.txtnp);
+        listView = findViewById(R.id.listViewSongs);
+        bottomPanel = findViewById(R.id.bottomPanelMain);
 
+        mySongs = db.getAllSongs();
 
-        runtimepermission();
+        runtimePermission();
 
-        hbtnnext = findViewById(R.id.hbtnnext);
-        hbtnprev = findViewById(R.id.hbtnprev);
-        hbtnpause = findViewById(R.id.hbtnpause);
+        btnNext = findViewById(R.id.btnNextMain);
+        btnPrevious = findViewById(R.id.btnPreviousMain);
+        btnPause = findViewById(R.id.btnPauseMain);
         searchBtn = findViewById(R.id.SearchBtn);
         searchQuery = findViewById(R.id.SearchBox);
 
 
         if (PlayerActivity.mediaPlayer != null) {
-            PlayerActivity.mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
-                    hbtnnext.performClick();
-                }
-            });
+            PlayerActivity.mediaPlayer.setOnCompletionListener(mediaPlayer -> btnNext.performClick());
         }
 
-        searchBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String query = searchQuery.getText().toString();
-                List<Song> songs = db.getSongsByName(query);
-                mySongs = (ArrayList) songs;
-                items = new String[songs.size()];
-                for (int i = 0; i < songs.size(); i++) {
-                    items[i] = songs.get(i).getName();
-                }
-
-                customAdapter.notifyDataSetChanged();
-
+        searchBtn.setOnClickListener(view -> {
+            String query = searchQuery.getText().toString();
+            List<Song> songs = db.getSongsByName(query);
+            mySongs = new ArrayList<>(songs);
+            items = new String[songs.size()];
+            for (int i = 0; i < songs.size(); i++) {
+                items[i] = songs.get(i).getName();
             }
+
+            customAdapter.notifyDataSetChanged();
+
         });
+
         searchQuery.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -126,113 +121,96 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             }
         });
-        txtnp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (PlayerActivity.mediaPlayer == null || txtnp.getText().toString().equals("")) {
-                    Toast.makeText(MainActivity.this, "No song is playing", Toast.LENGTH_SHORT).show();
+
+        bottomPanel.setOnClickListener(view -> {
+            if (PlayerActivity.mediaPlayer == null || bottomPanel.getText().toString().equals("")) {
+                Toast.makeText(MainActivity.this, "No song is playing", Toast.LENGTH_SHORT).show();
+            } else {
+                Intent mIntent = new Intent(MainActivity.this, PlayerActivity.class);
+                mIntent.putExtra("mainActivitySongName", bottomPanel.getText().toString());
+                mIntent.putExtra("pos", position);
+                mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                mIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(mIntent);
+            }
+        });
+
+        btnPause.setOnClickListener(view -> {
+            if (PlayerActivity.mediaPlayer != null) {
+                if (PlayerActivity.mediaPlayer.isPlaying()) {
+                    btnPause.setBackgroundResource(R.drawable.ic_play_circle);
+                    PlayerActivity.mediaPlayer.pause();
+
                 } else {
-                    Intent mIntent = new Intent(MainActivity.this, PlayerActivity.class);
-                    mIntent.putExtra("mainActivitySongName", txtnp.getText().toString());
-                    mIntent.putExtra("pos", position);
-                    mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    mIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                    startActivity(mIntent);
+                    btnPause.setBackgroundResource(R.drawable.ic_pause_circle);
+                    PlayerActivity.mediaPlayer.start();
                 }
             }
         });
 
+        btnPrevious.setOnClickListener(view -> {
+            if (PlayerActivity.mediaPlayer != null) {
+                for (int i = 0; i < mySongs.size(); i++) {
+                    if (mySongs.get(i).getName().equals(bottomPanel.getText().toString())) {
+                        PlayerActivity.mediaPlayer.stop();
+                        PlayerActivity.mediaPlayer.release();
 
-        hbtnpause.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (PlayerActivity.mediaPlayer != null) {
-                    if (PlayerActivity.mediaPlayer.isPlaying()) {
-                        hbtnpause.setBackgroundResource(R.drawable.ic_play_circle);
-                        PlayerActivity.mediaPlayer.pause();
-
-                    } else {
-                        hbtnpause.setBackgroundResource(R.drawable.ic_pause_circle);
-                        PlayerActivity.mediaPlayer.start();
-                    }
-                }
-            }
-        });
-
-
-        hbtnnext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (PlayerActivity.mediaPlayer != null) {
-                    for (int i = 0; i < mySongs.size(); i++) {
-                        if (mySongs.get(i).getName().equals(txtnp.getText().toString())) {
-                            PlayerActivity.mediaPlayer.stop();
-                            PlayerActivity.mediaPlayer.release();
-                            if (i == mySongs.size() - 1) {
-
-                                Uri u = Uri.parse(mySongs.get(0).getSource());
-                                PlayerActivity.mediaPlayer = MediaPlayer.create(getApplicationContext(), u);
-                                String name = mySongs.get(0).getName();
-                                txtnp.setText(name);
-                                PlayerActivity.mediaPlayer.start();
-                                position = 0;
-                                return;
-                            } else {
-                                Uri u = Uri.parse(mySongs.get(i + 1).getSource());
-                                PlayerActivity.mediaPlayer = MediaPlayer.create(getApplicationContext(), u);
-                                String name = mySongs.get(i + 1).getName();
-                                txtnp.setText(name);
-                                PlayerActivity.mediaPlayer.start();
-                                position = i + 1;
-                                return;
-
-                            }
+                        if (i == 0) {
+                            Uri u = Uri.parse(mySongs.get(mySongs.size() - 1).getSource());
+                            PlayerActivity.mediaPlayer = MediaPlayer.create(getApplicationContext(), u);
+                            String name = mySongs.get(mySongs.size() - 1).getName();
+                            bottomPanel.setText(name);
+                            PlayerActivity.mediaPlayer.start();
+                            position = mySongs.size() - 1;
+                        } else {
+                            Uri u = Uri.parse(mySongs.get(i - 1).getSource());
+                            PlayerActivity.mediaPlayer = MediaPlayer.create(getApplicationContext(), u);
+                            String name = mySongs.get(i - 1).getName();
+                            bottomPanel.setText(name);
+                            PlayerActivity.mediaPlayer.start();
+                            position = i - 1;
                         }
+                        return;
                     }
-
                 }
             }
         });
-        hbtnprev.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (PlayerActivity.mediaPlayer != null) {
-                    for (int i = 0; i < mySongs.size(); i++) {
-                        if (mySongs.get(i).getName().equals(txtnp.getText().toString())) {
-                            PlayerActivity.mediaPlayer.stop();
-                            PlayerActivity.mediaPlayer.release();
-                            if (i == 0) {
 
-                                Uri u = Uri.parse(mySongs.get(mySongs.size() - 1).toString());
-                                PlayerActivity.mediaPlayer = MediaPlayer.create(getApplicationContext(), u);
-                                String name = mySongs.get(mySongs.size() - 1).getName();
-                                txtnp.setText(name);
-                                PlayerActivity.mediaPlayer.start();
-                                position = mySongs.size() - 1;
-                                return;
-                            } else {
-                                Uri u = Uri.parse(mySongs.get(i - 1).getSource());
-                                PlayerActivity.mediaPlayer = MediaPlayer.create(getApplicationContext(), u);
-                                String name = mySongs.get(i - 1).getName();
-                                txtnp.setText(name);
-                                PlayerActivity.mediaPlayer.start();
-                                position = i - 1;
-                                return;
+        btnNext.setOnClickListener(view -> {
+            if (PlayerActivity.mediaPlayer != null) {
+                for (int i = 0; i < mySongs.size(); i++) {
+                    if (mySongs.get(i).getName().equals(bottomPanel.getText().toString())) {
+                        PlayerActivity.mediaPlayer.stop();
+                        PlayerActivity.mediaPlayer.release();
 
-                            }
+                        if (i == mySongs.size() - 1) {
+                            Uri u = Uri.parse(mySongs.get(0).getSource());
+                            PlayerActivity.mediaPlayer = MediaPlayer.create(getApplicationContext(), u);
+                            String name = mySongs.get(0).getName();
+                            bottomPanel.setText(name);
+                            PlayerActivity.mediaPlayer.start();
+                            position = 0;
+                        } else {
+                            Uri u = Uri.parse(mySongs.get(i + 1).getSource());
+                            PlayerActivity.mediaPlayer = MediaPlayer.create(getApplicationContext(), u);
+                            String name = mySongs.get(i + 1).getName();
+                            bottomPanel.setText(name);
+                            PlayerActivity.mediaPlayer.start();
+                            position = i + 1;
+
                         }
+                        return;
                     }
                 }
             }
         });
-
-
     }
 
-    public void runtimepermission() {
+    public void runtimePermission() {
         Dexter.withContext(this)
                 .withPermissions(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO)
                 .withListener(new MultiplePermissionsListener() {
+
                     @Override
                     public void onPermissionsChecked(MultiplePermissionsReport multiplePermissionsReport) {
                         display();
@@ -245,10 +223,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }).check();
     }
 
-
-    void display() {
-
-
+    public void display() {
         items = new String[mySongs.size()];
         for (int i = 0; i < mySongs.size(); i++) {
             items[i] = mySongs.get(i).getName();
@@ -256,23 +231,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         listView.setAdapter(customAdapter);
 
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String songName = (String) listView.getItemAtPosition(position);
-                String sname = mySongs.get(position).getName();
-                startActivity(new Intent(getApplicationContext(), PlayerActivity.class)
-                        .putExtra("songs", mySongs)
-                        .putExtra("songname", songName)
-                        .putExtra("pos", position));
-
-
-            }
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+            String songName = (String) listView.getItemAtPosition(position);
+            //String sname = mySongs.get(position).getName();
+            startActivity(new Intent(getApplicationContext(), PlayerActivity.class)
+                    .putExtra("songs", mySongs)
+                    .putExtra("songname", songName)
+                    .putExtra("pos", position));
         });
     }
 
-    class customAdapter extends BaseAdapter {
+    public class customAdapter extends BaseAdapter {
 
         @Override
         public int getCount() {
@@ -291,11 +260,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-
             View view = getLayoutInflater().inflate(R.layout.list_song, null);
-            TextView textsong = view.findViewById(R.id.txtsongname);
-            textsong.setSelected(true);
-            textsong.setText(items[position]);
+            TextView textSong = view.findViewById(R.id.txtsongname);
+            textSong.setSelected(true);
+            textSong.setText(items[position]);
             return view;
         }
     }
@@ -309,8 +277,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Toast.makeText(this, "Online Library here", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.navradio:
-                Intent radiointent = new Intent(MainActivity.this, RadioActivity.class);
-                startActivity(radiointent);
+                Intent radioIntent = new Intent(MainActivity.this, RadioActivity.class);
+                startActivity(radioIntent);
                 Toast.makeText(this, "Radio here", Toast.LENGTH_SHORT).show();
                 break;
         }
@@ -334,16 +302,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onResume() {
         if (PlayerActivity.mediaPlayer != null) {
             if (PlayerActivity.mediaPlayer.isPlaying()) {
-                hbtnpause.setBackgroundResource(R.drawable.ic_pause_circle);
+                btnPause.setBackgroundResource(R.drawable.ic_pause_circle);
             } else {
-                hbtnpause.setBackgroundResource(R.drawable.ic_play_circle);
+                btnPause.setBackgroundResource(R.drawable.ic_play_circle);
             }
             Intent i = getIntent();
             String songName = i.getStringExtra(PlayerActivity.EXTRA_NAME);
-            txtnp.setText(songName);
-            txtnp.setSelected(true);
+            bottomPanel.setText(songName);
+            bottomPanel.setSelected(true);
         } else {
-            hbtnpause.setBackgroundResource(R.drawable.ic_play_circle);
+            btnPause.setBackgroundResource(R.drawable.ic_play_circle);
         }
         super.onResume();
     }
@@ -362,7 +330,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         cloudSongs.add(new Song("G-Eazy - I Mean It  ft. Remo", "https://firebasestorage.googleapis.com/v0/b/bulgarianparty-5acf8.appspot.com/o/G-Eazy%20-%20I%20Mean%20It%20(Official%20Music%20Video)%20ft.%20Remo.mp3?alt=media&token=bf81e315-1b0c-462a-811d-a7719f5d1800"));
         cloudSongs.add(new Song("Future - Life Is Good  ft. Drake", "https://firebasestorage.googleapis.com/v0/b/bulgarianparty-5acf8.appspot.com/o/Future%20-%20Life%20Is%20Good%20(Official%20Music%20Video)%20ft.%20Drake.mp3?alt=media&token=9fbbf31f-4bfe-4dcd-a56d-00113ba4d9f1"));
         cloudSongs.add(new Song("Jack Harlow - WHATS POPPIN feat. Dababy, Tory Lanez, & Lil Wayne", "https://firebasestorage.googleapis.com/v0/b/bulgarianparty-5acf8.appspot.com/o/Jack%20Harlow%20-%20WHATS%20POPPIN%20feat.%20Dababy%2C%20Tory%20Lanez%2C%20%26%20Lil%20Wayne%20%5BOfficial%20Video%5D.mp3?alt=media&token=9fbf6297-de63-4ed7-a704-7d89d25914fc"));
-        cloudSongs.add(new Song("Maroon 5 - Beautiful Mistakes ft. Megan Thee Stallion", "        https://firebasestorage.googleapis.com/v0/b/bulgarianparty-5acf8.appspot.com/o/Maroon%205%20-%20Beautiful%20Mistakes%20ft.%20Megan%20Thee%20Stallion%20(Official%20Music%20Video).mp3?alt=media&token=f8017dce-55f3-436b-bbbe-4e66ffc143ec"));
+        cloudSongs.add(new Song("Maroon 5 - Beautiful Mistakes ft. Megan Thee Stallion", "https://firebasestorage.googleapis.com/v0/b/bulgarianparty-5acf8.appspot.com/o/Maroon%205%20-%20Beautiful%20Mistakes%20ft.%20Megan%20Thee%20Stallion%20(Official%20Music%20Video).mp3?alt=media&token=f8017dce-55f3-436b-bbbe-4e66ffc143ec"));
 
 
         for (Song s : cloudSongs) {
@@ -380,8 +348,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         customAdapter.notifyDataSetChanged();
-
-
     }
-
 }

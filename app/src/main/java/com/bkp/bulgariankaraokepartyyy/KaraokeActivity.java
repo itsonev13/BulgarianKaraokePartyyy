@@ -37,7 +37,7 @@ public class KaraokeActivity extends AppCompatActivity {
             PlayerActivity.mediaPlayer.release();
         }
 
-        Uri u = Uri.parse(mySongs.get(1).getSource());
+        Uri u = Uri.parse(mySongs.get(1).getLyrics());
         PlayerActivity.mediaPlayer = MediaPlayer.create(getApplicationContext(), u);
         String name = mySongs.get(0).getName();
 

@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class PlayerActivity extends AppCompatActivity {
-    Button btnpause, btnprev, btnnext, btnff, btnfr, btnloop, btnshuff;
+    Button btnPause, btnPrev, btnNext, btnff, btnfr, btnloop, btnshuff;
     TextView txtsn, txtsstart, txtsstop;
     SeekBar seekmusic;
     BlastVisualizer mVisualizer;
@@ -80,7 +80,7 @@ public class PlayerActivity extends AppCompatActivity {
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
-                btnnext.performClick();
+                btnNext.performClick();
                 seekmusic.setProgress(0);
             }
         });
@@ -124,9 +124,9 @@ public class PlayerActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         btnshuff = findViewById(R.id.btnshuffle);
-        btnpause = findViewById(R.id.playbtn);
-        btnnext = findViewById(R.id.btnnext);
-        btnprev = findViewById(R.id.btnprev);
+        btnPause = findViewById(R.id.playbtn);
+        btnNext = findViewById(R.id.btnnext);
+        btnPrev = findViewById(R.id.btnprev);
         txtsn = findViewById(R.id.txtsn);
         seekmusic = findViewById(R.id.seekbars);
         txtsstart = findViewById(R.id.txtsstart);
@@ -189,7 +189,7 @@ public class PlayerActivity extends AppCompatActivity {
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
-                btnnext.performClick();
+                btnNext.performClick();
             }
         });
 
@@ -248,23 +248,23 @@ public class PlayerActivity extends AppCompatActivity {
             }
         });
 
-        btnpause.setOnClickListener(new View.OnClickListener() {
+        btnPause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 seekmusic.setMax(mediaPlayer.getDuration());
                 if (mediaPlayer.isPlaying()) {
-                    btnpause.setBackgroundResource(R.drawable.ic_play);
+                    btnPause.setBackgroundResource(R.drawable.ic_play);
                     mediaPlayer.pause();
 
                 } else {
-                    btnpause.setBackgroundResource(R.drawable.ic_pause);
+                    btnPause.setBackgroundResource(R.drawable.ic_pause);
                     mediaPlayer.start();
                 }
             }
         });
 
-        btnnext.setOnClickListener(new View.OnClickListener() {
+        btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -288,7 +288,7 @@ public class PlayerActivity extends AppCompatActivity {
                         seekmusic.setMax(mediaPlayer.getDuration());
                         seekmusic.setProgress(0);
                         mediaPlayer.start();
-                        btnpause.setBackgroundResource(R.drawable.ic_pause);
+                        btnPause.setBackgroundResource(R.drawable.ic_pause);
                         startAnimation(imageView);
                         String endТime = createtime(mediaPlayer.getDuration());
                         txtsstop.setText(endТime);
@@ -298,7 +298,7 @@ public class PlayerActivity extends AppCompatActivity {
                         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                             @Override
                             public void onCompletion(MediaPlayer mp) {
-                                btnnext.performClick();
+                                btnNext.performClick();
                             }
                         });
                     }
@@ -306,7 +306,7 @@ public class PlayerActivity extends AppCompatActivity {
             }
         });
 
-        btnprev.setOnClickListener(new View.OnClickListener() {
+        btnPrev.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mediaPlayer.stop();
@@ -330,7 +330,7 @@ public class PlayerActivity extends AppCompatActivity {
                         seekmusic.setMax(mediaPlayer.getDuration());
                         seekmusic.setProgress(0);
                         mediaPlayer.start();
-                        btnpause.setBackgroundResource(R.drawable.ic_pause);
+                        btnPause.setBackgroundResource(R.drawable.ic_pause);
                         startAnimationl2r(imageView);
                         String endТime = createtime(mediaPlayer.getDuration());
                         txtsstop.setText(endТime);
