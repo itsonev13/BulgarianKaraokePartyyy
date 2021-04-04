@@ -101,8 +101,9 @@ public class PlayerActivity extends AppCompatActivity {
         };
 
         if (mediaPlayer != null) {
-            mediaPlayer.stop();
-            mediaPlayer.release();
+            mediaPlayer.pause();
+           // mediaPlayer.stop();
+            //mediaPlayer.release();
         }
 
         Intent currIntent = getIntent();
@@ -204,8 +205,9 @@ public class PlayerActivity extends AppCompatActivity {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mediaPlayer.stop();
-                mediaPlayer.release();
+                //mediaPlayer.stop();
+                //mediaPlayer.release();
+                mediaPlayer.pause();
                 mediaPlayer = new MediaPlayer();
                 position = ((position + 1) % mySongs.size());
 
@@ -247,8 +249,10 @@ public class PlayerActivity extends AppCompatActivity {
         btnPrev.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mediaPlayer.stop();
-                mediaPlayer.release();
+               // mediaPlayer.stop();
+               // mediaPlayer.release();
+                mediaPlayer.pause();
+
                 position = ((position - 1) < 0) ? (mySongs.size() - 1) : (position - 1);
 
                 Uri u = Uri.parse(mySongs.get(position).getSource());

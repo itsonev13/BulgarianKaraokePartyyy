@@ -33,36 +33,31 @@
             android:textStyle="italic">
 
         </TextView>
+
+
         <RelativeLayout
             android:layout_width="300dp"
             android:layout_height="300dp">
 
-            <com.gauravk.audiovisualizer.visualizer.BlastVisualizer
-                android:id="@+id/blastVisualizer"
+            <TextView
+                android:id="@+id/txtSongName2"
+                android:layout_width="280dp"
+                android:layout_height="280dp"
+                android:layout_margin="20dp"
+                android:layout_marginBottom="20dp"
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:padding="10dp"
+                android:scrollHorizontally="true"
+                android:singleLine="true"
+                android:text="Song Name"
+                android:textAlignment="center"
+                android:textColor="#fff"
+                android:textSize="22sp"
+                android:textStyle="italic">
 
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="8dp"
-                app:avColor="@color/gold"
-                app:avDensity="0.5"
-                app:avSpeed="normal"
-                app:avType="outline"
-                app:avWidth="4dp" />
-
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="258dp"
-                android:layout_height="247dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="8dp"
-                android:foregroundGravity="center_vertical|center_horizontal"
-                android:paddingTop="30dp"
-                android:src="@drawable/musix">
-
-            </ImageView>
-
+            </TextView>
         </RelativeLayout>
-
 
         <RelativeLayout
             android:layout_width="match_parent"
