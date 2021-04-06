@@ -33,8 +33,9 @@ public class KaraokeActivity extends AppCompatActivity {
         mySongs = new ArrayList<>( bundle.getParcelableArrayList("songs"));
 
         if (PlayerActivity.mediaPlayer != null) {
-            PlayerActivity.mediaPlayer.stop();
-            PlayerActivity.mediaPlayer.release();
+            PlayerActivity.mediaPlayer.pause();
+            //PlayerActivity.mediaPlayer.stop();
+            //PlayerActivity.mediaPlayer.release();
         }
 
         Uri u = Uri.parse(mySongs.get(1).getLyrics());

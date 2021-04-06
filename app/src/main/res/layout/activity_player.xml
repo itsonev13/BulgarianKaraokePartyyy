@@ -122,7 +122,7 @@
             android:padding="5dp">
 
             <Button
-                android:id="@+id/btnPlayPlayer"
+                android:id="@+id/btnPlay"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:layout_centerHorizontal="true"
@@ -131,28 +131,28 @@
             </Button>
 
             <Button
-                android:id="@+id/btnNextPlayer"
+                android:id="@+id/btnNext"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginTop="15dp"
-                android:layout_toRightOf="@+id/btnPlayPlayer"
+                android:layout_toRightOf="@+id/btnPlay"
                 android:background="@drawable/ic_next">
 
             </Button>
 
             <Button
-                android:id="@+id/btnFForwardPlayer"
+                android:id="@+id/btnFForward"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="20dp"
-                android:layout_toRightOf="@+id/btnNextPlayer"
+                android:layout_toRightOf="@+id/btnNext"
                 android:background="@drawable/ic_fast_forward">
 
             </Button>
 
             <Button
-                android:id="@+id/btnFReversePlayer"
+                android:id="@+id/btnFReverse"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginTop="20dp"
@@ -167,7 +167,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginTop="15dp"
-                android:layout_toLeftOf="@+id/btnPlayPlayer"
+                android:layout_toLeftOf="@+id/btnPlay"
                 android:background="@drawable/ic_prev">
 
             </Button>
@@ -178,7 +178,7 @@
                 android:layout_height="20dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="30dp"
-                android:layout_toRightOf="@+id/btnFForwardPlayer"
+                android:layout_toRightOf="@+id/btnFForward"
                 android:background="@drawable/ic_repeat">
 
             </Button>
@@ -189,7 +189,7 @@
                 android:layout_height="20dp"
                 android:layout_marginTop="30dp"
                 android:layout_marginRight="10dp"
-                android:layout_toLeftOf="@+id/btnFReversePlayer"
+                android:layout_toLeftOf="@+id/btnFReverse"
                 android:background="@drawable/ic_shuffle">
             </Button>
 
