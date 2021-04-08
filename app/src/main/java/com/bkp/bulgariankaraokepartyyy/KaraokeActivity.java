@@ -21,6 +21,7 @@ public class KaraokeActivity extends AppCompatActivity {
     private Button btnPause, btnPrev, btnNext;
     private TextView txtSongName;
     private TextView txtLyrics;
+    private boolean stopped = false;
 
     private String songName;
     private int position;
@@ -69,6 +70,7 @@ public class KaraokeActivity extends AppCompatActivity {
 
         PlayerActivity.mediaPlayer = MediaPlayer.create(getApplicationContext(), uri);
         PlayerActivity.mediaPlayer.start();
+        stopped = false;
 
         updateLyrics = new Thread() {
 
@@ -78,7 +80,7 @@ public class KaraokeActivity extends AppCompatActivity {
                 int currentPosition = 0;
 
                 try {
-                    while (currentPosition < totalDuration) {
+                    while (currentPosition < totalDuration && !stopped) {
                         Thread.sleep(1000);
                         currentPosition = PlayerActivity.mediaPlayer.getCurrentPosition();
 
@@ -180,6 +182,8 @@ public class KaraokeActivity extends AppCompatActivity {
                 toPlayerActivity.putExtra("songName", songName);
                 toPlayerActivity.putExtra("position", position);
                 toPlayerActivity.putExtra("from", "karaoke");
+
+                stopped = true;
 
                 startActivity(toPlayerActivity);
                 this.overridePendingTransition(R.anim.swipe_right_animation_enter, R.anim.swipe_right_animation_leave);
