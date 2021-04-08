@@ -82,6 +82,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         searchBtn = findViewById(R.id.SearchBtn);
         searchQuery = findViewById(R.id.SearchBox);
 
+        Intent currIntent = getIntent();
+        Bundle bundle = currIntent.getExtras();
+        if(bundle != null){
+            position = bundle.getInt("position", 0);
+        }
+
+
         if (PlayerActivity.mediaPlayer != null) {
             PlayerActivity.mediaPlayer.setOnCompletionListener(mediaPlayer -> btnNext.performClick());
         }

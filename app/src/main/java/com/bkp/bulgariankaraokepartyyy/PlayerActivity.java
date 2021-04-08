@@ -98,8 +98,6 @@ public class PlayerActivity extends AppCompatActivity {
         if (mediaPlayer != null) {
             mediaPlayer.pause();
             mediaPlayerCurrPosition = mediaPlayer.getCurrentPosition();
-            System.out.println("tva li e");
-            System.out.println(mediaPlayerCurrPosition);
         }
 
         Intent currIntent = getIntent();
@@ -291,6 +289,7 @@ public class PlayerActivity extends AppCompatActivity {
             Intent mIntent = new Intent(PlayerActivity.this, MainActivity.class);
             songName = mySongs.get(position).getName();
             mIntent.putExtra(EXTRA_NAME, songName);
+            mIntent.putExtra("position", position);
             startActivity(mIntent);
 
         }
