@@ -126,6 +126,7 @@ public class KaraokeActivity extends AppCompatActivity {
             PlayerActivity.mediaPlayer.pause();
             PlayerActivity.mediaPlayer = new MediaPlayer();
 
+            position = ((position + 1) % mySongs.size());
             Uri u = Uri.parse(mySongs.get(position).getMainSource());
 
             try {
@@ -149,6 +150,7 @@ public class KaraokeActivity extends AppCompatActivity {
         btnPrev.setOnClickListener(view -> {
             PlayerActivity.mediaPlayer.pause();
 
+            position = ((position - 1) < 0) ? (mySongs.size() - 1) : (position - 1);
             Uri u = Uri.parse(mySongs.get(position).getMainSource());
             PlayerActivity.mediaPlayer = new MediaPlayer();
 
