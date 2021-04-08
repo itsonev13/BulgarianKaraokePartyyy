@@ -127,7 +127,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             } else {
                 Intent mIntent = new Intent(MainActivity.this, PlayerActivity.class);
                 mIntent.putExtra("mainActivitySongName", bottomPanel.getText().toString());
-                mIntent.putExtra("pos", position);
+                mIntent.putExtra("position", position);
+                mIntent.putExtra("from", "main");
                 mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 mIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(mIntent);
@@ -236,7 +237,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             startActivity(new Intent(getApplicationContext(), PlayerActivity.class)
                     .putExtra("songs", mySongs)
                     .putExtra("songName", songName)
-                    .putExtra("pos", position));
+                    .putExtra("position", position)
+                    .putExtra("from", "main"));
         });
     }
 

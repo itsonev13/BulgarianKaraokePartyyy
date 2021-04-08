@@ -93,8 +93,11 @@ public class PlayerActivity extends AppCompatActivity {
             }
         };
 
+        int mediaPlayerCurrPosition = 0;
+
         if (mediaPlayer != null) {
             mediaPlayer.pause();
+            mediaPlayerCurrPosition = mediaPlayer.getCurrentPosition();
         }
 
         Intent currIntent = getIntent();
@@ -105,13 +108,19 @@ public class PlayerActivity extends AppCompatActivity {
         songName = mySongs.get(position).getName();
         txtSongName.setSelected(true);
 
-        position = bundle.getInt("pos", 0);
+        position = bundle.getInt("position", 0);
         Uri uri = Uri.parse(mySongs.get(position).getSource());
         songName = mySongs.get(position).getName();
         txtSongName.setText(songName);
 
+        String from = bundle.getString("from");
+
         mediaPlayer = MediaPlayer.create(getApplicationContext(), uri);
         mediaPlayer.start();
+
+        if(from.equals("karaoke")){
+            mediaPlayer.seekTo(mediaPlayerCurrPosition);
+        }
 
         mediaPlayer.setOnCompletionListener(mediaPlayer -> btnNext.performClick());
 
@@ -291,7 +300,7 @@ public class PlayerActivity extends AppCompatActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         String name = intent.getStringExtra("mainActivitySongName");
-        position = intent.getIntExtra("pos", 0);
+        position = intent.getIntExtra("position", 0);
         txtSongName.setText(name);
         String endTime = createTime(mediaPlayer.getDuration());
         seekMusic.setMax(mediaPlayer.getDuration());
@@ -299,9 +308,9 @@ public class PlayerActivity extends AppCompatActivity {
 
         //visualizer
         int audioSessionId = mediaPlayer.getAudioSessionId();
-        if (audioSessionId != -1)
+        if (audioSessionId != -1) {
             mVisualizer.setAudioSessionId(audioSessionId);
-
+        }
 
         mediaPlayer.setOnCompletionListener(mediaPlayer -> {
             btnNext.performClick();
@@ -322,13 +331,13 @@ public class PlayerActivity extends AppCompatActivity {
                         seekMusic.setProgress(currentPosition);
                     } catch (InterruptedException | IllegalStateException e) {
                         e.printStackTrace();
-
                     }
                 }
                 seekMusic.setProgress(0);
             }
         };
 
+        mediaPlayer.start();
         updateSeekBar.start();
     }
 
@@ -341,8 +350,8 @@ public class PlayerActivity extends AppCompatActivity {
                 //Left
                 Intent i = new Intent(PlayerActivity.this, KaraokeActivity.class)
                         .putExtra("songs", mySongs)
-                        .putExtra("songname", "Nqkvo ime")
-                        .putExtra("pos", 1);
+                        .putExtra("songName", songName)
+                        .putExtra("position", position);
 
                 startActivity(i);
                 this.overridePendingTransition(R.anim.swipe_left_animation_enter, R.anim.swipe_left_animation_leave);
