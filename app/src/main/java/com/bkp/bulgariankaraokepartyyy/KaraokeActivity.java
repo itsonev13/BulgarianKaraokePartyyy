@@ -14,14 +14,19 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class KaraokeActivity extends AppCompatActivity {
+    private final Database db = new Database(this);
     private Button btnPause, btnPrev, btnNext;
     private TextView txtSongName;
+    private TextView txtLyrics;
 
     private String songName;
     private int position;
     private ArrayList<Song> mySongs;
+    private Map<Integer, String> songLyrics;
+    private Thread updateLyrics;
 
 
     @Override
@@ -39,6 +44,7 @@ public class KaraokeActivity extends AppCompatActivity {
         btnPause = findViewById(R.id.btnPlay);
         btnNext = findViewById(R.id.btnNext);
         btnPrev = findViewById(R.id.btnPrevious);
+        txtLyrics = findViewById(R.id.txtLyrics);
 
         if (PlayerActivity.mediaPlayer != null) {
             PlayerActivity.mediaPlayer.pause();
@@ -48,19 +54,55 @@ public class KaraokeActivity extends AppCompatActivity {
         Bundle bundle = currIntent.getExtras();
 
         mySongs = new ArrayList<>(bundle.getParcelableArrayList("songs"));
+        position = bundle.getInt("position", 0);
 
         songName = mySongs.get(position).getName();
+        songLyrics = db.getSongLyricsBySongId(mySongs.get(position).getId());
         txtSongName.setSelected(true);
 
-        position = bundle.getInt("position", 0);
-        Uri uri = Uri.parse(mySongs.get(position).getLyrics());
+        Uri uri = Uri.parse(mySongs.get(position).getInstrumentalSource());
         songName = mySongs.get(position).getName();
         txtSongName.setText(songName);
 
         int currMediaPlayerPosition = PlayerActivity.mediaPlayer.getCurrentPosition();
 
+
         PlayerActivity.mediaPlayer = MediaPlayer.create(getApplicationContext(), uri);
         PlayerActivity.mediaPlayer.start();
+
+        updateLyrics = new Thread() {
+
+            @Override
+            public void run() {
+                int totalDuration = PlayerActivity.mediaPlayer.getDuration();
+                int currentPosition = 0;
+
+                try {
+                    while (currentPosition < totalDuration) {
+                        Thread.sleep(1000);
+                        currentPosition = PlayerActivity.mediaPlayer.getCurrentPosition();
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                int currentPosition = (PlayerActivity.mediaPlayer.getCurrentPosition() / 1000) * 1000;
+
+                                String lyric = songLyrics.get(currentPosition);
+                                System.out.println(currentPosition);
+
+                                if(lyric != null) {
+                                    setLyrics(lyric);
+                                }
+                            }
+                        });
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        updateLyrics.start();
 
         if(PlayerActivity.mediaPlayer != null){
             PlayerActivity.mediaPlayer.seekTo(currMediaPlayerPosition);
@@ -82,7 +124,7 @@ public class KaraokeActivity extends AppCompatActivity {
             PlayerActivity.mediaPlayer.pause();
             PlayerActivity.mediaPlayer = new MediaPlayer();
 
-            Uri u = Uri.parse(mySongs.get(position).getSource());
+            Uri u = Uri.parse(mySongs.get(position).getMainSource());
 
             try {
                 PlayerActivity.mediaPlayer.setDataSource(u.toString());
@@ -105,7 +147,7 @@ public class KaraokeActivity extends AppCompatActivity {
         btnPrev.setOnClickListener(view -> {
             PlayerActivity.mediaPlayer.pause();
 
-            Uri u = Uri.parse(mySongs.get(position).getSource());
+            Uri u = Uri.parse(mySongs.get(position).getMainSource());
             PlayerActivity.mediaPlayer = new MediaPlayer();
 
             try {
@@ -148,4 +190,9 @@ public class KaraokeActivity extends AppCompatActivity {
 
         return true;
     }
+
+    private void setLyrics(String lyric){
+        this.txtLyrics.setText(lyric);
+    }
 }
+

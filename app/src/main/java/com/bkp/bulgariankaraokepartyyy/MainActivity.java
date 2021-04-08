@@ -32,7 +32,9 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 //TODO Animation to change logo with text box
 
@@ -156,14 +158,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         PlayerActivity.mediaPlayer.release();
 
                         if (i == 0) {
-                            Uri u = Uri.parse(mySongs.get(mySongs.size() - 1).getSource());
+                            Uri u = Uri.parse(mySongs.get(mySongs.size() - 1).getMainSource());
                             PlayerActivity.mediaPlayer = MediaPlayer.create(getApplicationContext(), u);
                             String name = mySongs.get(mySongs.size() - 1).getName();
                             bottomPanel.setText(name);
                             PlayerActivity.mediaPlayer.start();
                             position = mySongs.size() - 1;
                         } else {
-                            Uri u = Uri.parse(mySongs.get(i - 1).getSource());
+                            Uri u = Uri.parse(mySongs.get(i - 1).getMainSource());
                             PlayerActivity.mediaPlayer = MediaPlayer.create(getApplicationContext(), u);
                             String name = mySongs.get(i - 1).getName();
                             bottomPanel.setText(name);
@@ -184,14 +186,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         PlayerActivity.mediaPlayer.release();
 
                         if (i == mySongs.size() - 1) {
-                            Uri u = Uri.parse(mySongs.get(0).getSource());
+                            Uri u = Uri.parse(mySongs.get(0).getMainSource());
                             PlayerActivity.mediaPlayer = MediaPlayer.create(getApplicationContext(), u);
                             String name = mySongs.get(0).getName();
                             bottomPanel.setText(name);
                             PlayerActivity.mediaPlayer.start();
                             position = 0;
                         } else {
-                            Uri u = Uri.parse(mySongs.get(i + 1).getSource());
+                            Uri u = Uri.parse(mySongs.get(i + 1).getMainSource());
                             PlayerActivity.mediaPlayer = MediaPlayer.create(getApplicationContext(), u);
                             String name = mySongs.get(i + 1).getName();
                             bottomPanel.setText(name);
@@ -334,11 +336,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         cloudSongs.add(new Song("Maroon 5 - Beautiful Mistakes ft. Megan Thee Stallion", "https://firebasestorage.googleapis.com/v0/b/bulgarianparty-5acf8.appspot.com/o/Maroon%205%20-%20Beautiful%20Mistakes%20ft.%20Megan%20Thee%20Stallion%20(Official%20Music%20Video).mp3?alt=media&token=f8017dce-55f3-436b-bbbe-4e66ffc143ec"));
 
 
+        Map<Integer, String> lyrics = new HashMap<>();
+        lyrics.put(4000, "Uh, first verse, uh, I'm armed 'til I'm on an island My life's ridin' on the Autobahn on autopilot Before I touch dirt, I'll kill y'all with kindness I kill ya, my natural persona's much worse");
+        lyrics.put(15000, "You've been warned if you've been born or if you conformed\n" +
+                "Slap up a cop and then snatch him out of his uniform\n" +
+                "Leave him with his socks, hard bottoms and bloomers on\n" +
+                "And hang him by his balls from the horn of a unicorn");
+        lyrics.put(26000, "Y'all niggas' intellect mad slow, y'all fags know\n" +
+                "Claimin' you bangin', you flamin'\n" +
+                "Bet you could light your own cigarette with ya asshole\n" +
+                "Me and Shady deaded the past");
+        lyrics.put(35000, "So that basically resurrected my cashflow\n" +
+                "I might rap tight as the snatch of a fat dyke\n" +
+                "Though I ain't wrapped tight\n" +
+                "My blood type's the '80s, my '90s was like the Navy\n" +
+                "You was like the Bradys, you still fly kites daily");
+
         for (Song s : cloudSongs) {
 
             List<Song> songCheck = db.getSongsByName(s.getName());
             if (songCheck.size() == 0) {
-                db.addSong(s);
+                db.addSong(s, lyrics);
             }
         }
         mySongs = db.getAllSongs();

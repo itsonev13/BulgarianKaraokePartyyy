@@ -7,37 +7,37 @@ import android.os.Parcelable;
 public class Song implements Parcelable {
     private  int id;
     private String name;
-    private String source;
-    private String lyrics;
+    private String mainSource;
+    private String instrumentalSource;
 
 
     public Song(){
 
     }
 
-    public Song(int id, String name, String source, String lyrics) {
+    public Song(int id, String name, String mainSource, String instrumentalSource) {
         this.id = id;
         this.name = name;
-        this.source = source;
-        this.lyrics = lyrics;
+        this.mainSource = mainSource;
+        this.instrumentalSource = instrumentalSource;
     }
 
-    public Song(String name, String source, String lyrics) {
+    public Song(String name, String mainSource, String instrumentalSource) {
         this.name = name;
-        this.source = source;
-        this.lyrics = lyrics;
+        this.mainSource = mainSource;
+        this.instrumentalSource = instrumentalSource;
     }
 
-    public Song(String name, String source) {
+    public Song(String name, String mainSource) {
         this.name = name;
-        this.source = source;
+        this.mainSource = mainSource;
     }
 
     protected Song(Parcel in) {
         id = in.readInt();
         name = in.readString();
-        source = in.readString();
-        lyrics = in.readString();
+        mainSource = in.readString();
+        instrumentalSource = in.readString();
     }
 
 
@@ -49,12 +49,12 @@ public class Song implements Parcelable {
         this.name = name;
     }
 
-    public void setSource(String source) {
-        this.source = source;
+    public void setMainSource(String mainSource) {
+        this.mainSource = mainSource;
     }
 
-    public void setLyrics(String lyrics) {
-        this.lyrics = lyrics;
+    public void setInstrumentalSource(String instrumentalSource) {
+        this.instrumentalSource = instrumentalSource;
     }
 
     public int getId() {
@@ -65,12 +65,12 @@ public class Song implements Parcelable {
         return name;
     }
 
-    public String getSource() {
-        return source;
+    public String getMainSource() {
+        return mainSource;
     }
 
-    public String getLyrics() {
-        return lyrics;
+    public String getInstrumentalSource() {
+        return instrumentalSource;
     }
 
     @Override
@@ -82,8 +82,8 @@ public class Song implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);
         dest.writeString(name);
-        dest.writeString(source);
-        dest.writeString(lyrics);
+        dest.writeString(mainSource);
+        dest.writeString(instrumentalSource);
     }
     public static final Creator<Song> CREATOR = new Creator<Song>() {
         @Override

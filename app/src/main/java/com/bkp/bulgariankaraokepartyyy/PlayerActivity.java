@@ -98,6 +98,8 @@ public class PlayerActivity extends AppCompatActivity {
         if (mediaPlayer != null) {
             mediaPlayer.pause();
             mediaPlayerCurrPosition = mediaPlayer.getCurrentPosition();
+            System.out.println("tva li e");
+            System.out.println(mediaPlayerCurrPosition);
         }
 
         Intent currIntent = getIntent();
@@ -109,7 +111,7 @@ public class PlayerActivity extends AppCompatActivity {
         txtSongName.setSelected(true);
 
         position = bundle.getInt("position", 0);
-        Uri uri = Uri.parse(mySongs.get(position).getSource());
+        Uri uri = Uri.parse(mySongs.get(position).getMainSource());
         songName = mySongs.get(position).getName();
         txtSongName.setText(songName);
 
@@ -195,7 +197,7 @@ public class PlayerActivity extends AppCompatActivity {
             mediaPlayer = new MediaPlayer();
             position = ((position + 1) % mySongs.size());
 
-            Uri u = Uri.parse(mySongs.get(position).getSource());
+            Uri u = Uri.parse(mySongs.get(position).getMainSource());
             try {
                 mediaPlayer.setDataSource(u.toString());
                 mediaPlayer.prepareAsync();
@@ -226,7 +228,7 @@ public class PlayerActivity extends AppCompatActivity {
 
             position = ((position - 1) < 0) ? (mySongs.size() - 1) : (position - 1);
 
-            Uri u = Uri.parse(mySongs.get(position).getSource());
+            Uri u = Uri.parse(mySongs.get(position).getMainSource());
             mediaPlayer = new MediaPlayer();
 
             try {
