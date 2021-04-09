@@ -70,33 +70,49 @@ public class Database extends SQLiteOpenHelper {
     }
 
     // Добавяне на нов Потребител
-    void addSong(Song song, Map<Integer, String> lyrics) {
+    long addSong(Song song) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(KEY_SONGS_NAME, song.getName());
         values.put(KEY_SONGS_MAIN_SOURCE, song.getMainSource());
         values.put(KEY_SONGS_INSTRUMENTAL_SOURCE, song.getInstrumentalSource());
-        db.insert(TABLE_SONGS, null, values);
+        long songId = db.insert(TABLE_SONGS, null, values);
 
-        String selectQuery = "SELECT * FROM " + TABLE_SONGS + " WHERE " + KEY_SONGS_NAME + " = " + "\"" + song.getName() + "\"";
-        Cursor cursor = db.rawQuery(selectQuery, null);
+//        String selectQuery = "SELECT * FROM " + TABLE_SONGS + " WHERE " + KEY_SONGS_NAME + " = " + "\"" + song.getName() + "\"";
+//        Cursor cursor = db.rawQuery(selectQuery, null);
+//
+//        if (cursor != null){
+//            cursor.moveToFirst();
+//        }
+//
+//        int currSongId = Integer.parseInt(cursor.getString(0));
 
-        if (cursor != null){
-            cursor.moveToFirst();
-        }
 
-        int currSongId = Integer.parseInt(cursor.getString(0));
+//        for (Map.Entry<Integer, String>  entry: lyrics.entrySet()) {
+//            ContentValues lyricsValues = new ContentValues();
+//            lyricsValues.put(KEY_SONGS_LYRICS_TEXT, entry.getValue());
+//            lyricsValues.put(KEY_SONGS_LYRICS_FROM, entry.getKey());
+//            lyricsValues.put(KEY_SONGS_LYRICS_SONG_ID, currSongId);
+//            db.insert(TABLE_LYRICS, null, lyricsValues);
+//        }
+
+        db.close(); // Затравяне на връзката с базата от данни
+        return songId;
+    }
+
+    void addLyrics(Map<Integer,String> lyrics, long songId){
+        SQLiteDatabase db = this.getWritableDatabase();
 
         for (Map.Entry<Integer, String>  entry: lyrics.entrySet()) {
             ContentValues lyricsValues = new ContentValues();
             lyricsValues.put(KEY_SONGS_LYRICS_TEXT, entry.getValue());
             lyricsValues.put(KEY_SONGS_LYRICS_FROM, entry.getKey());
-            lyricsValues.put(KEY_SONGS_LYRICS_SONG_ID, currSongId);
+            lyricsValues.put(KEY_SONGS_LYRICS_SONG_ID, songId);
             db.insert(TABLE_LYRICS, null, lyricsValues);
         }
 
-        db.close(); // Затравяне на връзката с базата от данни
+        db.close();
     }
 
     // Взимане на Потребител

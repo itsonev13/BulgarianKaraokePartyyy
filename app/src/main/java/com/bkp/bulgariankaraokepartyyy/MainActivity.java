@@ -327,45 +327,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void download() {
-        ArrayList<Song> cloudSongs = new ArrayList<>();
-        cloudSongs.add(new Song("Eminem - Not afraid", "https://firebasestorage.googleapis.com/v0/b/bulgarianparty-5acf8.appspot.com/o/Eminem%20-%20Not%20Afraid%20(Official%20Video).mp3?alt=media&token=c12d4c2b-b95e-41a6-a776-29f738739349"));
-        cloudSongs.add(new Song("Bad Meets Evil - Fast Lane ft. Eminem, Royce Da 5'9", "https://firebasestorage.googleapis.com/v0/b/bulgarianparty-5acf8.appspot.com/o/Bad%20Meets%20Evil%20-%20Fast%20Lane%20ft.%20Eminem%2C%20Royce%20Da%205'9.mp3?alt=media&token=3b0cafaa-ec19-44b7-98a7-5280c3abce91", "https://firebasestorage.googleapis.com/v0/b/bulgarianparty-5acf8.appspot.com/o/Bad%20Meets%20Evil%20-%20Fast%20Lane%20ft.%20Eminem%2C%20Royce%20Da%205'9%20(Instrumental).mp3?alt=media&token=635f7fc5-77a0-4ee7-a035-cf0d97f0c05a"));
-        cloudSongs.add(new Song("Eminem - Sing For The Moment", "https://firebasestorage.googleapis.com/v0/b/bulgarianparty-5acf8.appspot.com/o/Eminem%20-%20Sing%20For%20The%20Moment%20(Official%20Music%20Video).mp3?alt=media&token=b14ee08b-d87d-4edc-ba64-55e5a3321937"));
-        cloudSongs.add(new Song("MC Hammer - U Can't Touch This", "https://firebasestorage.googleapis.com/v0/b/bulgarianparty-5acf8.appspot.com/o/MC%20Hammer%20-%20U%20Can't%20Touch%20This%20(Official%20Music%20Video).mp3?alt=media&token=b8518a85-9730-4e11-bbb9-c53b3ccf32ae"));
-        cloudSongs.add(new Song("Pitbull - Hey Baby (Drop It To The Floor) ft. T-Pain", "https://firebasestorage.googleapis.com/v0/b/bulgarianparty-5acf8.appspot.com/o/Pitbull%20-%20Hey%20Baby%20(Drop%20It%20To%20The%20Floor)%20ft.%20T-Pain.mp3?alt=media&token=5335b768-47cc-4f3a-baf0-5136266f8d00"));
-        cloudSongs.add(new Song("Ricky Martin - Livin' La Vida Loca", "https://firebasestorage.googleapis.com/v0/b/bulgarianparty-5acf8.appspot.com/o/Ricky%20Martin%20-%20Livin'%20La%20Vida%20Loca.mp3?alt=media&token=1ccbfc3d-f462-4aba-bc30-168acad27e9d"));
-        cloudSongs.add(new Song("Saweetie - Best Friend (feat. Doja Cat)", "https://firebasestorage.googleapis.com/v0/b/bulgarianparty-5acf8.appspot.com/o/Saweetie%20-%20Best%20Friend%20(feat.%20Doja%20Cat)%20%5BOfficial%20Music%20Video%5D.mp3?alt=media&token=aa8e61cb-7320-4c7a-83e7-8f81468a6b27"));
-        cloudSongs.add(new Song("Timbaland - The Way I Are ft. Keri Hilson, D.O.E., Sebastian", "https://firebasestorage.googleapis.com/v0/b/bulgarianparty-5acf8.appspot.com/o/Timbaland%20-%20The%20Way%20I%20Are%20ft.%20Keri%20Hilson%2C%20D.O.E.%2C%20Sebastian%20(Official%20Music%20Video).mp3?alt=media&token=7ac824b7-5ef9-4a0a-8bb1-22ac474bf35b"));
-        cloudSongs.add(new Song("S.A.R.S. - Perspektiva ", "https://firebasestorage.googleapis.com/v0/b/bulgarianparty-5acf8.appspot.com/o/S.A.R.S.%20-%20Perspektiva%20(Official%20Video).mp3?alt=media&token=aaf7c0b2-b0b3-4b9a-88db-6a18fe55f547"));
-        cloudSongs.add(new Song("G-Eazy - I Mean It  ft. Remo", "https://firebasestorage.googleapis.com/v0/b/bulgarianparty-5acf8.appspot.com/o/G-Eazy%20-%20I%20Mean%20It%20(Official%20Music%20Video)%20ft.%20Remo.mp3?alt=media&token=bf81e315-1b0c-462a-811d-a7719f5d1800"));
-        cloudSongs.add(new Song("Future - Life Is Good  ft. Drake", "https://firebasestorage.googleapis.com/v0/b/bulgarianparty-5acf8.appspot.com/o/Future%20-%20Life%20Is%20Good%20(Official%20Music%20Video)%20ft.%20Drake.mp3?alt=media&token=9fbbf31f-4bfe-4dcd-a56d-00113ba4d9f1"));
-        cloudSongs.add(new Song("Jack Harlow - WHATS POPPIN feat. Dababy, Tory Lanez, & Lil Wayne", "https://firebasestorage.googleapis.com/v0/b/bulgarianparty-5acf8.appspot.com/o/Jack%20Harlow%20-%20WHATS%20POPPIN%20feat.%20Dababy%2C%20Tory%20Lanez%2C%20%26%20Lil%20Wayne%20%5BOfficial%20Video%5D.mp3?alt=media&token=9fbf6297-de63-4ed7-a704-7d89d25914fc"));
-        cloudSongs.add(new Song("Maroon 5 - Beautiful Mistakes ft. Megan Thee Stallion", "https://firebasestorage.googleapis.com/v0/b/bulgarianparty-5acf8.appspot.com/o/Maroon%205%20-%20Beautiful%20Mistakes%20ft.%20Megan%20Thee%20Stallion%20(Official%20Music%20Video).mp3?alt=media&token=f8017dce-55f3-436b-bbbe-4e66ffc143ec"));
+        DownloadMusic.download(db);
 
-
-        Map<Integer, String> lyrics = new HashMap<>();
-        lyrics.put(4000, "Uh, first verse, uh, I'm armed 'til I'm on an island My life's ridin' on the Autobahn on autopilot Before I touch dirt, I'll kill y'all with kindness I kill ya, my natural persona's much worse");
-        lyrics.put(15000, "You've been warned if you've been born or if you conformed\n" +
-                "Slap up a cop and then snatch him out of his uniform\n" +
-                "Leave him with his socks, hard bottoms and bloomers on\n" +
-                "And hang him by his balls from the horn of a unicorn");
-        lyrics.put(26000, "Y'all niggas' intellect mad slow, y'all fags know\n" +
-                "Claimin' you bangin', you flamin'\n" +
-                "Bet you could light your own cigarette with ya asshole\n" +
-                "Me and Shady deaded the past");
-        lyrics.put(35000, "So that basically resurrected my cashflow\n" +
-                "I might rap tight as the snatch of a fat dyke\n" +
-                "Though I ain't wrapped tight\n" +
-                "My blood type's the '80s, my '90s was like the Navy\n" +
-                "You was like the Bradys, you still fly kites daily");
-
-        for (Song s : cloudSongs) {
-
-            List<Song> songCheck = db.getSongsByName(s.getName());
-            if (songCheck.size() == 0) {
-                db.addSong(s, lyrics);
-            }
-        }
         mySongs = db.getAllSongs();
 
         items = new String[mySongs.size()];

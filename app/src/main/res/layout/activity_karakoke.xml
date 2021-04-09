@@ -36,27 +36,19 @@
 
 
         <RelativeLayout
-            android:layout_width="300dp"
+            android:layout_width="360dp"
             android:layout_height="300dp">
 
             <TextView
                 android:id="@+id/txtLyrics"
-                android:layout_width="280dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:layout_marginBottom="20dp"
+                android:layout_width="360dp"
+                android:layout_height="300dp"
 
-                android:marqueeRepeatLimit="marquee_forever"
-                android:padding="10dp"
-                android:scrollHorizontally="true"
-
+                android:singleLine="false"
                 android:textAlignment="center"
                 android:textColor="#fff"
                 android:textSize="22sp"
-                android:textStyle="italic"
-                android:maxLines="12"
-                android:ellipsize="none"
-                android:singleLine="false">
+                android:textStyle="italic">
 
             </TextView>
         </RelativeLayout>

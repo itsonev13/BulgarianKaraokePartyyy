@@ -71,6 +71,7 @@ public class KaraokeActivity extends AppCompatActivity {
         PlayerActivity.mediaPlayer = MediaPlayer.create(getApplicationContext(), uri);
         PlayerActivity.mediaPlayer.start();
         stopped = false;
+        setLyrics("");
 
         updateLyrics = new Thread() {
 
@@ -178,23 +179,27 @@ public class KaraokeActivity extends AppCompatActivity {
         if(touchEvent.getAction() == MotionEvent.ACTION_UP) {
             if (x1 > y1) {
                 //Right
-                Intent toPlayerActivity = new Intent(KaraokeActivity.this, PlayerActivity.class);
-
-                toPlayerActivity.putExtra("songs", mySongs);
-                toPlayerActivity.putExtra("songName", songName);
-                toPlayerActivity.putExtra("position", position);
-                toPlayerActivity.putExtra("from", "karaoke");
-
-                stopped = true;
-
-                startActivity(toPlayerActivity);
-                this.overridePendingTransition(R.anim.swipe_right_animation_enter, R.anim.swipe_right_animation_leave);
+                swipe();
 
                 return true;
             }
         }
 
         return true;
+    }
+
+    private void swipe(){
+        Intent toPlayerActivity = new Intent(KaraokeActivity.this, PlayerActivity.class);
+
+        toPlayerActivity.putExtra("songs", mySongs);
+        toPlayerActivity.putExtra("songName", songName);
+        toPlayerActivity.putExtra("position", position);
+        toPlayerActivity.putExtra("from", "karaoke");
+
+        stopped = true;
+
+        startActivity(toPlayerActivity);
+        this.overridePendingTransition(R.anim.swipe_right_animation_enter, R.anim.swipe_right_animation_leave);
     }
 
     private void setLyrics(String lyric){
