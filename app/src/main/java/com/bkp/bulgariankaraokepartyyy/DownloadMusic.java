@@ -26,6 +26,7 @@ public class DownloadMusic {
         cloudSongs.add(new Song("Търновска Царица - Илка Александрова", "https://firebasestorage.googleapis.com/v0/b/bulgarianparty-5acf8.appspot.com/o/%D0%A2%D1%8A%D1%80%D0%BD%D0%BE%D0%B2%D1%81%D0%BA%D0%B0%20%D1%86%D0%B0%D1%80%D0%B8%D1%86%D0%B0.mp3?alt=media&token=c1d8a150-de36-4286-a696-ec72e6c92e57", "https://firebasestorage.googleapis.com/v0/b/bulgarianparty-5acf8.appspot.com/o/%D0%A2%D1%8A%D1%80%D0%BD%D0%BE%D0%B2%D1%81%D0%BA%D0%B0%20%D1%86%D0%B0%D1%80%D0%B8%D1%86%D0%B0%20(instrumental).mp3?alt=media&token=e48fa573-4967-4354-814c-af9de30ec98b"));
         cloudSongs.add(new Song("Бяла Роза - Славка Калчева", "https://firebasestorage.googleapis.com/v0/b/bulgarianparty-5acf8.appspot.com/o/%D0%91%D1%8F%D0%BB%D0%B0%20%D1%80%D0%BE%D0%B7%D0%B0%20.mp3?alt=media&token=3b7d9870-e604-4670-a417-110dd6423d40", "https://firebasestorage.googleapis.com/v0/b/bulgarianparty-5acf8.appspot.com/o/%D0%91%D1%8F%D0%BB%D0%B0%20%D1%80%D0%BE%D0%B7%D0%B0%20%D0%98%D0%BD%D1%81%D1%82%D1%80%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D0%BB.mp3?alt=media&token=85c75aa3-8523-4f5a-a5b7-9deefde0d482"));
         cloudSongs.add(new Song("Мома Яница - Яница", "https://firebasestorage.googleapis.com/v0/b/bulgarianparty-5acf8.appspot.com/o/%D0%9C%D0%BE%D0%BC%D0%B0%20%D0%AF%D0%BD%D0%B8%D1%86%D0%B0-%D0%AF%D0%BD%D0%B8%D1%86%D0%B0.mp3?alt=media&token=57ff58b0-9ea3-43d0-8a52-f60c8ef345fa", "https://firebasestorage.googleapis.com/v0/b/bulgarianparty-5acf8.appspot.com/o/%D0%9C%D0%BE%D0%BC%D0%B0%20%D0%AF%D0%BD%D0%B8%D1%86%D0%B0-%D0%AF%D0%BD%D0%B8%D1%86%D0%B0%20%D0%98%D0%BD%D1%81%D1%82%D1%80%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D0%BB.mp3?alt=media&token=feb66db4-1f56-4f4a-ac87-a72572375b1f"));
+        cloudSongs.add(new Song("Слави и Ку-Ку Бенд - Кой уши байрака", "https://firebasestorage.googleapis.com/v0/b/bulgarianparty-5acf8.appspot.com/o/%D0%A1%D0%BB%D0%B0%D0%B2%D0%B8%20%D0%B8%20%D0%9A%D1%83-%D0%9A%D1%83%20%D0%91%D0%B5%D0%BD%D0%B4%20-%20%D0%9A%D0%BE%D0%B9%20%D1%83%D1%88%D0%B8%20%D0%B1%D0%B0%D0%B9%D1%80%D0%B0%D0%BA%D0%B0.mp3?alt=media&token=0c3dc182-3407-4a91-bae8-c10d17145209", "https://firebasestorage.googleapis.com/v0/b/bulgarianparty-5acf8.appspot.com/o/%D0%A1%D0%BB%D0%B0%D0%B2%D0%B8%20%D0%B8%20%D0%9A%D1%83-%D0%9A%D1%83%20%D0%91%D0%B5%D0%BD%D0%B4%20-%20%D0%9A%D0%BE%D0%B9%20%D1%83%D1%88%D0%B8%20%D0%B1%D0%B0%D0%B9%D1%80%D0%B0%D0%BA%D0%B0%20(instrumental).mp3?alt=media&token=58178ae2-ea26-4a2b-890a-443b659024b6"));
 
 
         Map<Integer, String> lyricsTurnovskaCarica = new HashMap<>();
@@ -150,10 +151,29 @@ public class DownloadMusic {
         lyricsMomaQnica.put(252000,"Кой ще се намери хубост да премери, мома да спечели?\n");
         lyricsMomaQnica.put(259000,"");
 
+        Map<Integer, String> lyricsKoiUshiBairqka = new HashMap<>();
+
+        lyricsKoiUshiBairqka.put(30000, "Айде провикна се турския паша\nот Панагюрище,\n");
+        lyricsKoiUshiBairqka.put(44000, "Айде, вий идете и я уловете\nРайнa Попгеоргиева!\n");
+        lyricsKoiUshiBairqka.put(59000, "Айде, вий идете и я уловете\nРайнa Попгеоргиева!\n");
+        lyricsKoiUshiBairqka.put(72000, "");
+
+        lyricsKoiUshiBairqka.put(101000, "Нито я колете, нито я бесете,\nнай при мене доведете я!\n");
+        lyricsKoiUshiBairqka.put(115000, "Ази да я питам, питам и разпитам\nкой уши байрака,");
+        lyricsKoiUshiBairqka.put(129000, "кой уши байрака,\nкой му тури знака\n\"Смърт или свобода\"");
+        lyricsKoiUshiBairqka.put(143000, "");
+
+        lyricsKoiUshiBairqka.put(172000, "Айде провикна се\nРайна Попгеоргиева\nот Панагюрище\n");
+        lyricsKoiUshiBairqka.put(186000, "Щете ме колете, щете ме бесете,\nаз съм Райна Попгеоргиева!\n");
+        lyricsKoiUshiBairqka.put(201000, "Аз уших байрака,\nаз му турих знака,\n\"Смърт или свобода\"!\n");
+        lyricsKoiUshiBairqka.put(214000, "\"Смърт или свобода\"!\n");
+        lyricsKoiUshiBairqka.put(221000, "");
+
         List<Map<Integer, String>> lyrics = new ArrayList<>(4);
         lyrics.add(lyricsTurnovskaCarica);
         lyrics.add(lyricsBqlaRoza);
         lyrics.add(lyricsMomaQnica);
+        lyrics.add(lyricsKoiUshiBairqka);
         for (int i = 0; i < cloudSongs.size(); i++) {
             List<Song> songCheck = db.getSongsByName(cloudSongs.get(i).getName());
 
