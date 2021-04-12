@@ -6,11 +6,14 @@ import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -91,7 +94,6 @@ public class KaraokeActivity extends AppCompatActivity {
                                 int currentPosition = (PlayerActivity.mediaPlayer.getCurrentPosition() / 1000) * 1000;
 
                                 String lyric = songLyrics.get(currentPosition);
-                                System.out.println(currentPosition);
 
                                 if(lyric != null) {
                                     setLyrics(lyric);
@@ -125,10 +127,11 @@ public class KaraokeActivity extends AppCompatActivity {
 
         btnNext.setOnClickListener(view -> {
             PlayerActivity.mediaPlayer.pause();
+            setLyrics("");
             PlayerActivity.mediaPlayer = new MediaPlayer();
 
             position = ((position + 1) % mySongs.size());
-            Uri u = Uri.parse(mySongs.get(position).getMainSource());
+            Uri u = Uri.parse(mySongs.get(position).getInstrumentalSource());
 
             try {
                 PlayerActivity.mediaPlayer.setDataSource(u.toString());
@@ -139,7 +142,9 @@ public class KaraokeActivity extends AppCompatActivity {
 
             PlayerActivity.mediaPlayer.setOnPreparedListener(mediaPlayer -> {
                 songName = mySongs.get(position).getName();
+                songLyrics = db.getSongLyricsBySongId(mySongs.get(position).getId());
                 txtSongName.setText(songName);
+
 
                 mediaPlayer.start();
                 btnPause.setBackgroundResource(R.drawable.ic_pause);
@@ -150,9 +155,10 @@ public class KaraokeActivity extends AppCompatActivity {
 
         btnPrev.setOnClickListener(view -> {
             PlayerActivity.mediaPlayer.pause();
+            setLyrics("");
 
             position = ((position - 1) < 0) ? (mySongs.size() - 1) : (position - 1);
-            Uri u = Uri.parse(mySongs.get(position).getMainSource());
+            Uri u = Uri.parse(mySongs.get(position).getInstrumentalSource());
             PlayerActivity.mediaPlayer = new MediaPlayer();
 
             try {
@@ -164,6 +170,7 @@ public class KaraokeActivity extends AppCompatActivity {
 
             PlayerActivity.mediaPlayer.setOnPreparedListener(mediaPlayer -> {
                 songName = mySongs.get(position).getName();
+                songLyrics = db.getSongLyricsBySongId(mySongs.get(position).getId());
                 txtSongName.setText(songName);
 
                 mediaPlayer.start();
@@ -186,6 +193,20 @@ public class KaraokeActivity extends AppCompatActivity {
         }
 
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            swipe();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        swipe();
     }
 
     private void swipe(){

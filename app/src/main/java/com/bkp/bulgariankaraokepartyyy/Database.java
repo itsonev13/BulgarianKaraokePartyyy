@@ -148,7 +148,7 @@ public class Database extends SQLiteOpenHelper {
                 song.setId(Integer.parseInt(cursor.getString(0)));
                 song.setName(cursor.getString(1));
                 song.setMainSource(cursor.getString(2));
-                song.setInstrumentalSource(cursor.getString(2));
+                song.setInstrumentalSource(cursor.getString(3));
                 songsList.add(song);
             } while (cursor.moveToNext());
         }
@@ -196,7 +196,7 @@ public class Database extends SQLiteOpenHelper {
                 song.setId(Integer.parseInt(cursor.getString(0)));
                 song.setName(cursor.getString(1));
                 song.setMainSource(cursor.getString(2));
-                song.setInstrumentalSource(cursor.getString(2));
+                song.setInstrumentalSource(cursor.getString(3));
                 // Добавяне на Потребител в колекцията
                 songsList.add(song);
             } while (cursor.moveToNext());
