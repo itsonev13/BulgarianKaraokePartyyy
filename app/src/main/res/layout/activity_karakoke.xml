@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/mxbg"
+    android:orientation="vertical"
+    android:weightSum="10"
+    tools:context=".PlayerActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="7"
+        android:gravity="center"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/txtSongName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:ellipsize="marquee"
+            android:padding="10dp"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:text="Song Name"
+            android:textAlignment="center"
+            android:textColor="#fff"
+            android:textSize="22sp"
+            android:layout_marginBottom="20dp"
+            android:textStyle="italic">
+
+        </TextView>
+
+
+        <RelativeLayout
+            android:layout_width="360dp"
+            android:layout_height="300dp">
+
+            <TextView
+                android:id="@+id/txtLyrics"
+                android:layout_width="360dp"
+                android:layout_height="300dp"
+
+                android:gravity="center"
+                android:singleLine="false"
+                android:textAlignment="center"
+                android:textColor="#fff"
+                android:textSize="22sp"
+                android:textStyle="italic">
+
+            </TextView>
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp">
+
+            <Button
+                android:id="@+id/btnPlay"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/ic_pause">
+
+            </Button>
+
+            <Button
+                android:id="@+id/btnNext"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="15dp"
+                android:layout_toEndOf="@+id/btnPlay"
+                android:background="@drawable/ic_next">
+
+            </Button>
+
+            <Button
+                android:id="@+id/btnPrevious"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="15dp"
+                android:layout_toStartOf="@+id/btnPlay"
+                android:background="@drawable/ic_prev">
+
+            </Button>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

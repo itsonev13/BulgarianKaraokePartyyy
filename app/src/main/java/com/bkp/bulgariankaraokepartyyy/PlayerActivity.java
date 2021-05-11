@@ -18,6 +18,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -26,207 +27,132 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gauravk.audiovisualizer.visualizer.BlastVisualizer;
-import java.io.File;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class PlayerActivity extends AppCompatActivity {
-    Button btnpause,btnprev,btnnext,btnff,btnfr,btnloop,btnshuff;
-    TextView txtsn,txtsstart,txtsstop;
-    SeekBar seekmusic;
-    BlastVisualizer mVisualizer;
-    String sname;
-    ImageView imageView;
     public static final String EXTRA_NAME = "song_name";
+    public static MediaPlayer mediaPlayer;
 
-    static MediaPlayer mediaPlayer;
-    int position;
+    private Button btnPause, btnPrev, btnNext, btnFF, btnFR, btnLoop, btnShuffle;
+    private TextView txtSongName, txtSongStart, txtSongStop;
+    private SeekBar seekMusic;
+    private BlastVisualizer mVisualizer;
+    private String songName;
+    private ImageView imageView;
 
-    ArrayList<Song> mySongs;
-    Thread updateSeekbar;
-    static boolean updateIsStoped= false;
+    private int position;
 
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
-        if (item.getItemId()==android.R.id.home)
-        {
-            Intent mIntent=new Intent(PlayerActivity.this, MainActivity.class);
-            sname = mySongs.get(position).getName();
-            mIntent.putExtra(EXTRA_NAME, sname);
-            startActivity(mIntent);
-            updateIsStoped = true ;
-
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        String name = intent.getStringExtra("mainActivitySongName");
-        position = intent.getIntExtra("pos",0);
-        txtsn.setText(name);
-        String endtime = createtime(mediaPlayer.getDuration());
-        seekmusic.setMax(mediaPlayer.getDuration());
-        txtsstop.setText(endtime);
-        //visualizer
-        int audioSessionId = mediaPlayer.getAudioSessionId();
-        if (audioSessionId != -1)
-            mVisualizer.setAudioSessionId(audioSessionId);
-        //
-        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                btnnext.performClick(); seekmusic.setProgress(0);
-            }
-        });
-        updateSeekbar = new Thread()
-        {
-            @Override
-            public void run() {
-                int totalDuration = mediaPlayer.getDuration();
-                int currentPosition = 0;
-                updateIsStoped= false;
-                while (currentPosition<totalDuration )
-                {
-                    try {
-                        sleep(500);
-                        if(updateIsStoped)
-                            break;
-                        currentPosition = mediaPlayer.getCurrentPosition();
-                        seekmusic.setProgress(currentPosition);
-                    }
-                    catch (InterruptedException | IllegalStateException e)
-                    {
-                        e.printStackTrace();
-
-                    }
-                }
-                seekmusic.setProgress(0);
-                updateIsStoped=false;
-            }
-        };
-        updateSeekbar.start();
-
-    }
-
+    private ArrayList<Song> mySongs;
+    private Thread updateSeekBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
+
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#FFD700")));
         getSupportActionBar().setTitle("Now Playing");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        btnshuff = findViewById(R.id.btnshuffle);
-        btnpause = findViewById(R.id.playbtn);
-        btnnext = findViewById(R.id.btnnext);
-        btnprev = findViewById(R.id.btnprev);
-        txtsn = findViewById(R.id.txtsn);
-        seekmusic = findViewById(R.id.seekbars);
-        txtsstart  =findViewById(R.id.txtsstart);
-        txtsstop = findViewById(R.id.txtsstop);
-        btnff = findViewById(R.id.btnff);
-        btnfr = findViewById(R.id.btnfr);
-        btnloop = findViewById(R.id.btnloop);
 
-        mVisualizer = findViewById(R.id.blastvisualizer);
-        imageView = findViewById(R.id.imageview);
+        txtSongName = findViewById(R.id.txtSongName);
+        txtSongStart = findViewById(R.id.txtSongStart);
+        txtSongStop = findViewById(R.id.txtSongStop);
+        seekMusic = findViewById(R.id.seekBars);
+        btnPause = findViewById(R.id.btnPlay);
+        btnNext = findViewById(R.id.btnNext);
+        btnPrev = findViewById(R.id.btnPrevious);
+        btnFF = findViewById(R.id.btnFForward);
+        btnFR = findViewById(R.id.btnFReverse);
+        btnShuffle = findViewById(R.id.btnShuffle);
+        btnLoop = findViewById(R.id.btnLoop);
 
+        mVisualizer = findViewById(R.id.blastVisualizer);
+        imageView = findViewById(R.id.imageView);
 
-        updateSeekbar = new Thread()
-        {
+        updateSeekBar = new Thread() {
             @Override
             public void run() {
                 int totalDuration = mediaPlayer.getDuration();
                 int currentPosition = 0;
 
-                while (currentPosition<totalDuration)
-                {
+                while (currentPosition < totalDuration) {
                     try {
                         sleep(500);
-                        if(updateIsStoped)
-                            break;
                         currentPosition = mediaPlayer.getCurrentPosition();
-                        seekmusic.setProgress(currentPosition);
-                    }
-                    catch (InterruptedException | IllegalStateException e)
-                    {
+                        seekMusic.setProgress(currentPosition);
+                    } catch (InterruptedException | IllegalStateException e) {
                         e.printStackTrace();
-
                     }
                 }
-                seekmusic.setProgress(0);
-                updateIsStoped=false;
+
+                seekMusic.setProgress(0);
             }
         };
 
-        if (mediaPlayer!=null)
-        {
-            mediaPlayer.stop();
-            mediaPlayer.release();
+        int mediaPlayerCurrPosition = 0;
+
+        if (mediaPlayer != null) {
+            mediaPlayer.pause();
+            mediaPlayerCurrPosition = mediaPlayer.getCurrentPosition();
         }
 
+        Intent currIntent = getIntent();
+        Bundle bundle = currIntent.getExtras();
 
-        Intent i = getIntent();
-        Bundle bundle = i.getExtras();
+        mySongs = new ArrayList<>(bundle.getParcelableArrayList("songs"));
 
-        mySongs = (ArrayList) bundle.getParcelableArrayList("songs");
+        songName = mySongs.get(position).getName();
+        txtSongName.setSelected(true);
 
-        sname = mySongs.get(position).getName();
-        String songName = i.getStringExtra("songname");
-        txtsn.setSelected(true);
+        position = bundle.getInt("position", 0);
+        Uri uri = Uri.parse(mySongs.get(position).getMainSource());
+        songName = mySongs.get(position).getName();
+        txtSongName.setText(songName);
 
-        position = bundle.getInt("pos",0);
-        Uri uri = Uri.parse(mySongs.get(position).getSource());
-        sname = mySongs.get(position).getName();
-        txtsn.setText(sname);
+        String from = bundle.getString("from");
 
-        mediaPlayer = MediaPlayer.create(getApplicationContext(),uri);
+        mediaPlayer = MediaPlayer.create(getApplicationContext(), uri);
         mediaPlayer.start();
 
+        if(from.equals("karaoke")){
+            mediaPlayer.seekTo(mediaPlayerCurrPosition);
+        }
 
-        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                btnnext.performClick();
-            }
-        });
+        mediaPlayer.setOnCompletionListener(mediaPlayer -> btnNext.performClick());
 
         //visualizer
         int audioSessionId = mediaPlayer.getAudioSessionId();
-        if (audioSessionId != -1)
+        if (audioSessionId != -1) {
             mVisualizer.setAudioSessionId(audioSessionId);
+        }
 
-
-
-        String endtime = createtime(mediaPlayer.getDuration());
-        txtsstop.setText(endtime);
+        String endTime = createTime(mediaPlayer.getDuration());
+        txtSongStop.setText(endTime);
 
         final Handler handler = new Handler();
         final int delay = 1000; //milliseconds
 
-        handler.postDelayed(new Runnable(){
-            public void run(){
+        handler.postDelayed(new Runnable() {
+            public void run() {
                 //do something
-                String currenttime = createtime(mediaPlayer.getCurrentPosition());
-                txtsstart.setText(currenttime);
+                String currentTime = createTime(mediaPlayer.getCurrentPosition());
+                txtSongStart.setText(currentTime);
                 handler.postDelayed(this, delay);
             }
         }, delay);
 
-        seekmusic.setMax(mediaPlayer.getDuration());
+        seekMusic.setMax(mediaPlayer.getDuration());
 
-        updateSeekbar.start();
+        updateSeekBar.start();
 
-        seekmusic.getProgressDrawable().setColorFilter(getResources().getColor(R.color.av_light_blue), PorterDuff.Mode.MULTIPLY);
-        seekmusic.getThumb().setColorFilter(getResources().getColor(R.color.av_light_blue),PorterDuff.Mode.SRC_IN);
+        seekMusic.getProgressDrawable().setColorFilter(getResources().getColor(R.color.av_light_blue), PorterDuff.Mode.MULTIPLY);
+        seekMusic.getThumb().setColorFilter(getResources().getColor(R.color.av_light_blue), PorterDuff.Mode.SRC_IN);
 
-        seekmusic.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        seekMusic.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
@@ -240,207 +166,244 @@ public class PlayerActivity extends AppCompatActivity {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 mediaPlayer.seekTo(seekBar.getProgress());
-
-            }
-        });
-        btnshuff.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Collections.shuffle(mySongs);
-                Toast.makeText(getApplicationContext(),"Suffling songs", Toast.LENGTH_SHORT).show();
             }
         });
 
-        btnpause.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        btnPause.setOnClickListener(view -> {
+            seekMusic.setMax(mediaPlayer.getDuration());
+            if (mediaPlayer.isPlaying()) {
+                btnPause.setBackgroundResource(R.drawable.ic_play);
+                mediaPlayer.pause();
 
-                seekmusic.setMax(mediaPlayer.getDuration());
-                if (mediaPlayer.isPlaying())
-                {
-                    btnpause.setBackgroundResource(R.drawable.ic_play);
-                    mediaPlayer.pause();
+            } else {
+                btnPause.setBackgroundResource(R.drawable.ic_pause);
+                mediaPlayer.start();
+            }
+        });
 
+        btnNext.setOnClickListener(view -> {
+            mediaPlayer.pause();
+            mediaPlayer = new MediaPlayer();
+            position = ((position + 1) % mySongs.size());
+
+            Uri u = Uri.parse(mySongs.get(position).getMainSource());
+            try {
+                mediaPlayer.setDataSource(u.toString());
+                mediaPlayer.prepareAsync();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            mediaPlayer.setOnPreparedListener(mediaPlayer -> {
+                songName = mySongs.get(position).getName();
+                txtSongName.setText(songName);
+                seekMusic.setMax(mediaPlayer.getDuration());
+                seekMusic.setProgress(0);
+                mediaPlayer.start();
+                btnPause.setBackgroundResource(R.drawable.ic_pause);
+                startAnimationNext(imageView);
+                String endTime1 = createTime(mediaPlayer.getDuration());
+                txtSongStop.setText(endTime1);
+                int audioSessionId1 = mediaPlayer.getAudioSessionId();
+                if (audioSessionId1 != -1) {
+                    mVisualizer.setAudioSessionId(audioSessionId1);
                 }
-                else
-                {
-                    btnpause.setBackgroundResource(R.drawable.ic_pause);
-                    mediaPlayer.start();
-                }
+                mediaPlayer.setOnCompletionListener(mp -> btnNext.performClick());
+            });
+        });
+
+        btnPrev.setOnClickListener(view -> {
+            mediaPlayer.pause();
+
+            position = ((position - 1) < 0) ? (mySongs.size() - 1) : (position - 1);
+
+            Uri u = Uri.parse(mySongs.get(position).getMainSource());
+            mediaPlayer = new MediaPlayer();
+
+            try {
+                mediaPlayer.setDataSource(u.toString());
+                mediaPlayer.prepareAsync();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            mediaPlayer.setOnPreparedListener(mediaPlayer -> {
+                songName = mySongs.get(position).getName();
+                txtSongName.setText(songName);
+                seekMusic.setMax(mediaPlayer.getDuration());
+                seekMusic.setProgress(0);
+                mediaPlayer.start();
+                btnPause.setBackgroundResource(R.drawable.ic_pause);
+                startAnimationPrev(imageView);
+                String endTime12 = createTime(mediaPlayer.getDuration());
+                txtSongStop.setText(endTime12);
+                int audioSessionId12 = mediaPlayer.getAudioSessionId();
+                if (audioSessionId12 != -1)
+                    mVisualizer.setAudioSessionId(audioSessionId12);
+            });
+        });
+
+        btnFF.setOnClickListener(view -> {
+            if (mediaPlayer.isPlaying()) {
+                startColorAnimation(view, btnFF);
+                mediaPlayer.seekTo(mediaPlayer.getCurrentPosition() + 10000);
             }
         });
 
-        btnnext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                mediaPlayer.stop();
-                mediaPlayer.release();
-                mediaPlayer = new MediaPlayer();
-                position = ((position+1)%mySongs.size());
-
-                Uri u = Uri.parse(mySongs.get(position).getSource());
-                try {
-                    mediaPlayer.setDataSource(u.toString());
-                    mediaPlayer.prepareAsync();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                    @Override
-                    public void onPrepared(MediaPlayer mp) {
-                        sname = mySongs.get(position).getName();
-                        txtsn.setText(sname);
-                        seekmusic.setMax(mediaPlayer.getDuration());
-                        seekmusic.setProgress(0);
-                        mediaPlayer.start();
-                        btnpause.setBackgroundResource(R.drawable.ic_pause);
-                        startAnimation(imageView);
-                        String endТime = createtime(mediaPlayer.getDuration());
-                        txtsstop.setText(endТime);
-                        int audioSessionId = mediaPlayer.getAudioSessionId();
-                        if (audioSessionId != -1)
-                            mVisualizer.setAudioSessionId(audioSessionId);
-                        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                            @Override
-                            public void onCompletion(MediaPlayer mp) {
-                                btnnext.performClick();
-                            }
-                        });
-                    }
-                });
+        btnFR.setOnClickListener(view -> {
+            if (mediaPlayer.isPlaying()) {
+                startColorAnimation(view, btnFR);
+                mediaPlayer.seekTo(mediaPlayer.getCurrentPosition() - 10000);
             }
         });
 
-        btnprev.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mediaPlayer.stop();
-                mediaPlayer.release();
-                position = ((position-1)<0)?(mySongs.size()-1):(position-1);
+        btnLoop.setOnClickListener(view -> {
+            if (mediaPlayer != null) {
+                if (mediaPlayer.isLooping()) {
+                    mediaPlayer.setLooping(false);
+                    btnLoop.setBackgroundResource(R.drawable.ic_repeat);
 
-                Uri u = Uri.parse(mySongs.get(position).getSource());
-              //  mediaPlayer = MediaPlayer.create(getApplicationContext(),u);
-                mediaPlayer = new MediaPlayer();
-                try {
-                    mediaPlayer.setDataSource(u.toString());
-                    mediaPlayer.prepareAsync();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                    @Override
-                    public void onPrepared(MediaPlayer mp) {
-                        sname = mySongs.get(position).getName();
-                        txtsn.setText(sname);
-                        seekmusic.setMax(mediaPlayer.getDuration());
-                        seekmusic.setProgress(0);
-                        mediaPlayer.start();
-                        btnpause.setBackgroundResource(R.drawable.ic_pause);
-                        startAnimationl2r(imageView);
-                        String endТime = createtime(mediaPlayer.getDuration());
-                        txtsstop.setText(endТime);
-                        int audioSessionId = mediaPlayer.getAudioSessionId();
-                        if (audioSessionId != -1)
-                            mVisualizer.setAudioSessionId(audioSessionId);
-                    }
-                });
-            }
-        });
+                    Toast.makeText(getApplicationContext(), "Repeat off", Toast.LENGTH_SHORT).show();
 
-        btnff.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mediaPlayer.isPlaying())
-                {
-                    startColorAnimation(v,btnff);
-                    mediaPlayer.seekTo(mediaPlayer.getCurrentPosition()+10000);
-                }
-            }
-        });
-        btnfr.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mediaPlayer.isPlaying())
-                {
-                    startColorAnimation(v,btnfr);
-                    mediaPlayer.seekTo(mediaPlayer.getCurrentPosition()-10000);
-                }
-            }
-        });
-        btnloop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mediaPlayer!=null)
-                {
-                    if (mediaPlayer.isLooping())
-                    {
-                        mediaPlayer.setLooping(false);
-                        btnloop.setBackgroundResource(R.drawable.ic_repeat);
-
-                        Toast.makeText(getApplicationContext(),"Repeat off", Toast.LENGTH_SHORT).show();
-
-                    }
-                    else
-                    {
-                        mediaPlayer.setLooping(true);
-                        btnloop.setBackgroundResource(R.drawable.ic_repeat_one);
-                        Toast.makeText(getApplicationContext(),"Repeat on", Toast.LENGTH_SHORT).show();
-                    }
+                } else {
+                    mediaPlayer.setLooping(true);
+                    btnLoop.setBackgroundResource(R.drawable.ic_repeat_one);
+                    Toast.makeText(getApplicationContext(), "Repeat on", Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
+        btnShuffle.setOnClickListener(view -> {
 
-
+            Collections.shuffle(mySongs);
+            Toast.makeText(getApplicationContext(), "Shuffling songs", Toast.LENGTH_SHORT).show();
+        });
     }
 
-    public String createtime(int duration)
-    {
-        String time = "";
-        int min = duration/1000/60;
-        int sec = duration/1000%60;
-        time+= min + ":";
-
-        if (sec<10)
-        {
-            time+= "0";
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            Intent mIntent = new Intent(PlayerActivity.this, MainActivity.class);
+            songName = mySongs.get(position).getName();
+            mIntent.putExtra(EXTRA_NAME, songName);
+            mIntent.putExtra("position", position);
+            startActivity(mIntent);
         }
-        time+=sec;
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        String name = intent.getStringExtra("mainActivitySongName");
+        position = intent.getIntExtra("position", 0);
+        txtSongName.setText(name);
+        String endTime = createTime(mediaPlayer.getDuration());
+        seekMusic.setMax(mediaPlayer.getDuration());
+        txtSongStop.setText(endTime);
+
+        //visualizer
+        int audioSessionId = mediaPlayer.getAudioSessionId();
+        if (audioSessionId != -1) {
+            mVisualizer.setAudioSessionId(audioSessionId);
+        }
+
+        mediaPlayer.setOnCompletionListener(mediaPlayer -> {
+            btnNext.performClick();
+            seekMusic.setProgress(0);
+        });
+
+        updateSeekBar = new Thread() {
+
+            @Override
+            public void run() {
+                int totalDuration = mediaPlayer.getDuration();
+                int currentPosition = 0;
+
+                while (currentPosition < totalDuration) {
+                    try {
+                        sleep(500);
+                        currentPosition = mediaPlayer.getCurrentPosition();
+                        seekMusic.setProgress(currentPosition);
+                    } catch (InterruptedException | IllegalStateException e) {
+                        e.printStackTrace();
+                    }
+                }
+                seekMusic.setProgress(0);
+            }
+        };
+
+        mediaPlayer.start();
+        updateSeekBar.start();
+    }
+
+    public boolean onTouchEvent(MotionEvent touchEvent) {
+        float x1 = touchEvent.getX();
+        float y1 = touchEvent.getY();
+
+        if (touchEvent.getAction() == MotionEvent.ACTION_UP) {
+            if (x1 < y1) {
+                //Left
+                Intent i = new Intent(PlayerActivity.this, KaraokeActivity.class)
+                        .putExtra("songs", mySongs)
+                        .putExtra("songName", songName)
+                        .putExtra("position", position);
+
+                startActivity(i);
+                this.overridePendingTransition(R.anim.swipe_left_animation_enter, R.anim.swipe_left_animation_leave);
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public String createTime(int duration) {
+        String time = "";
+        int min = duration / 1000 / 60;
+        int sec = duration / 1000 % 60;
+        time += min + ":";
+
+        if (sec < 10) {
+            time += "0";
+        }
+        time += sec;
 
         return time;
     }
-    public void startAnimation(View view)
-    {
-        ObjectAnimator animator = ObjectAnimator.ofFloat(imageView, "rotation", 0f , 360f);
+
+    public void startAnimationNext(View view) {
+        ObjectAnimator animator = ObjectAnimator.ofFloat(imageView, "rotation", 0f, 360f);
         animator.setDuration(1000);
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.playTogether(animator);
         animatorSet.start();
 
-        ObjectAnimator animator2 = ObjectAnimator.ofFloat(mVisualizer, "alpha", 0f , 1f);
+        ObjectAnimator animator2 = ObjectAnimator.ofFloat(mVisualizer, "alpha", 0f, 1f);
         animator2.setDuration(4000);
         AnimatorSet animatorSet2 = new AnimatorSet();
         animatorSet2.playTogether(animator2);
         animatorSet2.start();
     }
-    public void startAnimationl2r(View view)
-    {
-        ObjectAnimator animator = ObjectAnimator.ofFloat(imageView, "rotation", 360f , 0f);
+
+    public void startAnimationPrev(View view) {
+        ObjectAnimator animator = ObjectAnimator.ofFloat(imageView, "rotation", 360f, 0f);
         animator.setDuration(1000);
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.playTogether(animator);
         animatorSet.start();
 
-        ObjectAnimator animator2 = ObjectAnimator.ofFloat(mVisualizer, "alpha", 0f , 1f);
+        ObjectAnimator animator2 = ObjectAnimator.ofFloat(mVisualizer, "alpha", 0f, 1f);
         animator2.setDuration(4000);
         AnimatorSet animatorSet2 = new AnimatorSet();
         animatorSet2.playTogether(animator2);
         animatorSet2.start();
     }
-    public void startColorAnimation(View view,Button btn){
-        ObjectAnimator animator = ObjectAnimator.ofFloat(btn, "alpha", 0.7f , 1f);
+
+    public void startColorAnimation(View view, Button btn) {
+        ObjectAnimator animator = ObjectAnimator.ofFloat(btn, "alpha", 0.7f, 1f);
         animator.setDuration(1000);
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.playTogether(animator);
