@@ -145,7 +145,6 @@ public class PlayerActivity extends AppCompatActivity {
             }
         }, delay);
 
-
         seekMusic.setMax(mediaPlayer.getDuration());
 
         updateSeekBar.start();
@@ -167,18 +166,10 @@ public class PlayerActivity extends AppCompatActivity {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 mediaPlayer.seekTo(seekBar.getProgress());
-
             }
         });
 
-        btnShuffle.setOnClickListener(view -> {
-
-            Collections.shuffle(mySongs);
-            Toast.makeText(getApplicationContext(), "Shuffling songs", Toast.LENGTH_SHORT).show();
-        });
-
         btnPause.setOnClickListener(view -> {
-
             seekMusic.setMax(mediaPlayer.getDuration());
             if (mediaPlayer.isPlaying()) {
                 btnPause.setBackgroundResource(R.drawable.ic_play);
@@ -281,6 +272,12 @@ public class PlayerActivity extends AppCompatActivity {
                 }
             }
         });
+
+        btnShuffle.setOnClickListener(view -> {
+
+            Collections.shuffle(mySongs);
+            Toast.makeText(getApplicationContext(), "Shuffling songs", Toast.LENGTH_SHORT).show();
+        });
     }
 
     @Override
@@ -291,7 +288,6 @@ public class PlayerActivity extends AppCompatActivity {
             mIntent.putExtra(EXTRA_NAME, songName);
             mIntent.putExtra("position", position);
             startActivity(mIntent);
-
         }
 
         return super.onOptionsItemSelected(item);

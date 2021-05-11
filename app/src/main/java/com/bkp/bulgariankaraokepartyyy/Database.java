@@ -59,7 +59,6 @@ public class Database extends SQLiteOpenHelper {
         db.execSQL(CREATE_SONGS_LYRICS_TABLE);
     }
 
-    // Upgrading database
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SONGS);
@@ -69,7 +68,7 @@ public class Database extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    // Добавяне на нов Потребител
+    // Добавяне на нова песен
     long addSong(Song song) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -79,28 +78,12 @@ public class Database extends SQLiteOpenHelper {
         values.put(KEY_SONGS_INSTRUMENTAL_SOURCE, song.getInstrumentalSource());
         long songId = db.insert(TABLE_SONGS, null, values);
 
-//        String selectQuery = "SELECT * FROM " + TABLE_SONGS + " WHERE " + KEY_SONGS_NAME + " = " + "\"" + song.getName() + "\"";
-//        Cursor cursor = db.rawQuery(selectQuery, null);
-//
-//        if (cursor != null){
-//            cursor.moveToFirst();
-//        }
-//
-//        int currSongId = Integer.parseInt(cursor.getString(0));
-
-
-//        for (Map.Entry<Integer, String>  entry: lyrics.entrySet()) {
-//            ContentValues lyricsValues = new ContentValues();
-//            lyricsValues.put(KEY_SONGS_LYRICS_TEXT, entry.getValue());
-//            lyricsValues.put(KEY_SONGS_LYRICS_FROM, entry.getKey());
-//            lyricsValues.put(KEY_SONGS_LYRICS_SONG_ID, currSongId);
-//            db.insert(TABLE_LYRICS, null, lyricsValues);
-//        }
-
-        db.close(); // Затравяне на връзката с базата от данни
+        // Затравяне на връзката с базата от данни
+        db.close();
         return songId;
     }
 
+    // Добавяне на текст към песен
     void addLyrics(Map<Integer,String> lyrics, long songId){
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -115,25 +98,7 @@ public class Database extends SQLiteOpenHelper {
         db.close();
     }
 
-    // Взимане на Потребител
-    Song getSong(int id) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABLE_SONGS, new String[]{KEY_SONGS_ID,
-                        KEY_SONGS_NAME, KEY_SONGS_MAIN_SOURCE, KEY_SONGS_INSTRUMENTAL_SOURCE}, KEY_SONGS_ID + "=?",
-                new String[]{String.valueOf(id)}, null, null, null,
-                null);
-
-        if (cursor != null){
-            cursor.moveToFirst();
-        }
-
-        Song song = new Song(Integer.parseInt(cursor.getString(0)),
-                cursor.getString(1), cursor.getString(2), cursor.getString(3));
-
-        return song;
-    }
-
-    // Вземане на всички Потребители
+    // Вземане на всички песни
     public ArrayList<Song> getAllSongs() {
         ArrayList<Song> songsList = new ArrayList<>();
         // избор на всички
@@ -155,6 +120,7 @@ public class Database extends SQLiteOpenHelper {
         return songsList;
     }
 
+    // Взимане на песен по id
     public Map<Integer, String> getSongLyricsBySongId(int songId){
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -173,16 +139,7 @@ public class Database extends SQLiteOpenHelper {
         return songLyrics;
     }
 
-    public void dropSongs() {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SONGS);
-    }
-
-    public void dropSongsLyrics(){
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_LYRICS);
-    }
-
+    // Взимане на песен по име
     public List<Song> getSongsByName(String name) {
         List<Song> songsList = new ArrayList<>();
         // избор на всички
@@ -197,16 +154,47 @@ public class Database extends SQLiteOpenHelper {
                 song.setName(cursor.getString(1));
                 song.setMainSource(cursor.getString(2));
                 song.setInstrumentalSource(cursor.getString(3));
-                // Добавяне на Потребител в колекцията
+
+                // Добавяне на песен в колекцията
                 songsList.add(song);
             } while (cursor.moveToNext());
         }
-        // Връщане на колекция от Потребители
-        return songsList;
 
+        // Връщане на колекция от песни
+        return songsList;
     }
 
-    // Обновяване на даден Потребител
+    // Взимане на песен по id
+    Song getSong(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_SONGS, new String[]{KEY_SONGS_ID,
+                        KEY_SONGS_NAME, KEY_SONGS_MAIN_SOURCE, KEY_SONGS_INSTRUMENTAL_SOURCE}, KEY_SONGS_ID + "=?",
+                new String[]{String.valueOf(id)}, null, null, null,
+                null);
+
+        if (cursor != null){
+            cursor.moveToFirst();
+        }
+
+        Song song = new Song(Integer.parseInt(cursor.getString(0)),
+                cursor.getString(1), cursor.getString(2), cursor.getString(3));
+
+        return song;
+    }
+
+    // Изтриване на всички песни
+    public void dropSongs() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SONGS);
+    }
+
+    // Изтриване на текстовете на песните
+    public void dropSongsLyrics(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_LYRICS);
+    }
+
+    // Обновяване на дадена песен
     public int updateSongs(Song song) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -218,7 +206,7 @@ public class Database extends SQLiteOpenHelper {
                 new String[]{String.valueOf(song.getId())});
     }
 
-    // Изтриване на Потребител
+    // Изтриване на песен по име
     public void deleteSongsByName(String name) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_SONGS, KEY_SONGS_NAME + " = ?",
@@ -226,12 +214,13 @@ public class Database extends SQLiteOpenHelper {
         db.close();
     }
 
+    // Взимане на броя на песните
     public int getSongsCount() {
         String countQuery = "SELECT * FROM " + TABLE_SONGS;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(countQuery, null);
         cursor.close();
-        // Връщане на броя
+
         return cursor.getCount();
     }
 

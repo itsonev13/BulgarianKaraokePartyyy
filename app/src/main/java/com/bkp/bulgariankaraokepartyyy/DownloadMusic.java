@@ -9,25 +9,19 @@ public class DownloadMusic {
 
     public static void download(Database db) {
         ArrayList<Song> cloudSongs = new ArrayList<>();
-//        cloudSongs.add(new Song("Eminem - Not afraid", "https://firebasestorage.googleapis.com/v0/b/bulgarianparty-5acf8.appspot.com/o/Eminem%20-%20Not%20Afraid%20(Official%20Video).mp3?alt=media&token=c12d4c2b-b95e-41a6-a776-29f738739349"));
-//        cloudSongs.add(new Song("Bad Meets Evil - Fast Lane ft. Eminem, Royce Da 5'9", "https://firebasestorage.googleapis.com/v0/b/bulgarianparty-5acf8.appspot.com/o/Bad%20Meets%20Evil%20-%20Fast%20Lane%20ft.%20Eminem%2C%20Royce%20Da%205'9.mp3?alt=media&token=3b0cafaa-ec19-44b7-98a7-5280c3abce91", "https://firebasestorage.googleapis.com/v0/b/bulgarianparty-5acf8.appspot.com/o/Bad%20Meets%20Evil%20-%20Fast%20Lane%20ft.%20Eminem%2C%20Royce%20Da%205'9%20(Instrumental).mp3?alt=media&token=635f7fc5-77a0-4ee7-a035-cf0d97f0c05a"));
-//        cloudSongs.add(new Song("Eminem - Sing For The Moment", "https://firebasestorage.googleapis.com/v0/b/bulgarianparty-5acf8.appspot.com/o/Eminem%20-%20Sing%20For%20The%20Moment%20(Official%20Music%20Video).mp3?alt=media&token=b14ee08b-d87d-4edc-ba64-55e5a3321937"));
-//        cloudSongs.add(new Song("MC Hammer - U Can't Touch This", "https://firebasestorage.googleapis.com/v0/b/bulgarianparty-5acf8.appspot.com/o/MC%20Hammer%20-%20U%20Can't%20Touch%20This%20(Official%20Music%20Video).mp3?alt=media&token=b8518a85-9730-4e11-bbb9-c53b3ccf32ae"));
-//        cloudSongs.add(new Song("Pitbull - Hey Baby (Drop It To The Floor) ft. T-Pain", "https://firebasestorage.googleapis.com/v0/b/bulgarianparty-5acf8.appspot.com/o/Pitbull%20-%20Hey%20Baby%20(Drop%20It%20To%20The%20Floor)%20ft.%20T-Pain.mp3?alt=media&token=5335b768-47cc-4f3a-baf0-5136266f8d00"));
-//        cloudSongs.add(new Song("Ricky Martin - Livin' La Vida Loca", "https://firebasestorage.googleapis.com/v0/b/bulgarianparty-5acf8.appspot.com/o/Ricky%20Martin%20-%20Livin'%20La%20Vida%20Loca.mp3?alt=media&token=1ccbfc3d-f462-4aba-bc30-168acad27e9d"));
-//        cloudSongs.add(new Song("Saweetie - Best Friend (feat. Doja Cat)", "https://firebasestorage.googleapis.com/v0/b/bulgarianparty-5acf8.appspot.com/o/Saweetie%20-%20Best%20Friend%20(feat.%20Doja%20Cat)%20%5BOfficial%20Music%20Video%5D.mp3?alt=media&token=aa8e61cb-7320-4c7a-83e7-8f81468a6b27"));
-//        cloudSongs.add(new Song("Timbaland - The Way I Are ft. Keri Hilson, D.O.E., Sebastian", "https://firebasestorage.googleapis.com/v0/b/bulgarianparty-5acf8.appspot.com/o/Timbaland%20-%20The%20Way%20I%20Are%20ft.%20Keri%20Hilson%2C%20D.O.E.%2C%20Sebastian%20(Official%20Music%20Video).mp3?alt=media&token=7ac824b7-5ef9-4a0a-8bb1-22ac474bf35b"));
-//        cloudSongs.add(new Song("S.A.R.S. - Perspektiva ", "https://firebasestorage.googleapis.com/v0/b/bulgarianparty-5acf8.appspot.com/o/S.A.R.S.%20-%20Perspektiva%20(Official%20Video).mp3?alt=media&token=aaf7c0b2-b0b3-4b9a-88db-6a18fe55f547"));
-//        cloudSongs.add(new Song("G-Eazy - I Mean It  ft. Remo", "https://firebasestorage.googleapis.com/v0/b/bulgarianparty-5acf8.appspot.com/o/G-Eazy%20-%20I%20Mean%20It%20(Official%20Music%20Video)%20ft.%20Remo.mp3?alt=media&token=bf81e315-1b0c-462a-811d-a7719f5d1800"));
-//        cloudSongs.add(new Song("Future - Life Is Good  ft. Drake", "https://firebasestorage.googleapis.com/v0/b/bulgarianparty-5acf8.appspot.com/o/Future%20-%20Life%20Is%20Good%20(Official%20Music%20Video)%20ft.%20Drake.mp3?alt=media&token=9fbbf31f-4bfe-4dcd-a56d-00113ba4d9f1"));
-//        cloudSongs.add(new Song("Jack Harlow - WHATS POPPIN feat. Dababy, Tory Lanez, & Lil Wayne", "https://firebasestorage.googleapis.com/v0/b/bulgarianparty-5acf8.appspot.com/o/Jack%20Harlow%20-%20WHATS%20POPPIN%20feat.%20Dababy%2C%20Tory%20Lanez%2C%20%26%20Lil%20Wayne%20%5BOfficial%20Video%5D.mp3?alt=media&token=9fbf6297-de63-4ed7-a704-7d89d25914fc"));
-//        cloudSongs.add(new Song("Maroon 5 - Beautiful Mistakes ft. Megan Thee Stallion", "https://firebasestorage.googleapis.com/v0/b/bulgarianparty-5acf8.appspot.com/o/Maroon%205%20-%20Beautiful%20Mistakes%20ft.%20Megan%20Thee%20Stallion%20(Official%20Music%20Video).mp3?alt=media&token=f8017dce-55f3-436b-bbbe-4e66ffc143ec"));
 
-        cloudSongs.add(new Song("Търновска Царица - Илка Александрова", "https://firebasestorage.googleapis.com/v0/b/bulgarianparty-5acf8.appspot.com/o/%D0%A2%D1%8A%D1%80%D0%BD%D0%BE%D0%B2%D1%81%D0%BA%D0%B0%20%D1%86%D0%B0%D1%80%D0%B8%D1%86%D0%B0.mp3?alt=media&token=c1d8a150-de36-4286-a696-ec72e6c92e57", "https://firebasestorage.googleapis.com/v0/b/bulgarianparty-5acf8.appspot.com/o/%D0%A2%D1%8A%D1%80%D0%BD%D0%BE%D0%B2%D1%81%D0%BA%D0%B0%20%D1%86%D0%B0%D1%80%D0%B8%D1%86%D0%B0%20(instrumental).mp3?alt=media&token=e48fa573-4967-4354-814c-af9de30ec98b"));
-        cloudSongs.add(new Song("Бяла Роза - Славка Калчева", "https://firebasestorage.googleapis.com/v0/b/bulgarianparty-5acf8.appspot.com/o/%D0%91%D1%8F%D0%BB%D0%B0%20%D1%80%D0%BE%D0%B7%D0%B0%20.mp3?alt=media&token=3b7d9870-e604-4670-a417-110dd6423d40", "https://firebasestorage.googleapis.com/v0/b/bulgarianparty-5acf8.appspot.com/o/%D0%91%D1%8F%D0%BB%D0%B0%20%D1%80%D0%BE%D0%B7%D0%B0%20%D0%98%D0%BD%D1%81%D1%82%D1%80%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D0%BB.mp3?alt=media&token=85c75aa3-8523-4f5a-a5b7-9deefde0d482"));
-        cloudSongs.add(new Song("Мома Яница - Яница", "https://firebasestorage.googleapis.com/v0/b/bulgarianparty-5acf8.appspot.com/o/%D0%9C%D0%BE%D0%BC%D0%B0%20%D0%AF%D0%BD%D0%B8%D1%86%D0%B0-%D0%AF%D0%BD%D0%B8%D1%86%D0%B0.mp3?alt=media&token=57ff58b0-9ea3-43d0-8a52-f60c8ef345fa", "https://firebasestorage.googleapis.com/v0/b/bulgarianparty-5acf8.appspot.com/o/%D0%9C%D0%BE%D0%BC%D0%B0%20%D0%AF%D0%BD%D0%B8%D1%86%D0%B0-%D0%AF%D0%BD%D0%B8%D1%86%D0%B0%20%D0%98%D0%BD%D1%81%D1%82%D1%80%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D0%BB.mp3?alt=media&token=feb66db4-1f56-4f4a-ac87-a72572375b1f"));
-        cloudSongs.add(new Song("Слави и Ку-Ку Бенд - Кой уши байрака", "https://firebasestorage.googleapis.com/v0/b/bulgarianparty-5acf8.appspot.com/o/%D0%A1%D0%BB%D0%B0%D0%B2%D0%B8%20%D0%B8%20%D0%9A%D1%83-%D0%9A%D1%83%20%D0%91%D0%B5%D0%BD%D0%B4%20-%20%D0%9A%D0%BE%D0%B9%20%D1%83%D1%88%D0%B8%20%D0%B1%D0%B0%D0%B9%D1%80%D0%B0%D0%BA%D0%B0.mp3?alt=media&token=0c3dc182-3407-4a91-bae8-c10d17145209", "https://firebasestorage.googleapis.com/v0/b/bulgarianparty-5acf8.appspot.com/o/%D0%A1%D0%BB%D0%B0%D0%B2%D0%B8%20%D0%B8%20%D0%9A%D1%83-%D0%9A%D1%83%20%D0%91%D0%B5%D0%BD%D0%B4%20-%20%D0%9A%D0%BE%D0%B9%20%D1%83%D1%88%D0%B8%20%D0%B1%D0%B0%D0%B9%D1%80%D0%B0%D0%BA%D0%B0%20(instrumental).mp3?alt=media&token=58178ae2-ea26-4a2b-890a-443b659024b6"));
-
+        cloudSongs.add(new Song("Търновска Царица - Илка Александрова",
+                "https://firebasestorage.googleapis.com/v0/b/bulgarianparty-5acf8.appspot.com/o/%D0%A2%D1%8A%D1%80%D0%BD%D0%BE%D0%B2%D1%81%D0%BA%D0%B0%20%D1%86%D0%B0%D1%80%D0%B8%D1%86%D0%B0.mp3?alt=media&token=c1d8a150-de36-4286-a696-ec72e6c92e57",
+                "https://firebasestorage.googleapis.com/v0/b/bulgarianparty-5acf8.appspot.com/o/%D0%A2%D1%8A%D1%80%D0%BD%D0%BE%D0%B2%D1%81%D0%BA%D0%B0%20%D1%86%D0%B0%D1%80%D0%B8%D1%86%D0%B0%20(instrumental).mp3?alt=media&token=e48fa573-4967-4354-814c-af9de30ec98b"));
+        cloudSongs.add(new Song("Бяла Роза - Славка Калчева",
+                "https://firebasestorage.googleapis.com/v0/b/bulgarianparty-5acf8.appspot.com/o/%D0%91%D1%8F%D0%BB%D0%B0%20%D1%80%D0%BE%D0%B7%D0%B0%20.mp3?alt=media&token=3b7d9870-e604-4670-a417-110dd6423d40",
+                "https://firebasestorage.googleapis.com/v0/b/bulgarianparty-5acf8.appspot.com/o/%D0%91%D1%8F%D0%BB%D0%B0%20%D1%80%D0%BE%D0%B7%D0%B0%20%D0%98%D0%BD%D1%81%D1%82%D1%80%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D0%BB.mp3?alt=media&token=85c75aa3-8523-4f5a-a5b7-9deefde0d482"));
+        cloudSongs.add(new Song("Мома Яница - Яница",
+                "https://firebasestorage.googleapis.com/v0/b/bulgarianparty-5acf8.appspot.com/o/%D0%9C%D0%BE%D0%BC%D0%B0%20%D0%AF%D0%BD%D0%B8%D1%86%D0%B0-%D0%AF%D0%BD%D0%B8%D1%86%D0%B0.mp3?alt=media&token=57ff58b0-9ea3-43d0-8a52-f60c8ef345fa",
+                "https://firebasestorage.googleapis.com/v0/b/bulgarianparty-5acf8.appspot.com/o/%D0%9C%D0%BE%D0%BC%D0%B0%20%D0%AF%D0%BD%D0%B8%D1%86%D0%B0-%D0%AF%D0%BD%D0%B8%D1%86%D0%B0%20%D0%98%D0%BD%D1%81%D1%82%D1%80%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D0%BB.mp3?alt=media&token=feb66db4-1f56-4f4a-ac87-a72572375b1f"));
+        cloudSongs.add(new Song("Слави и Ку-Ку Бенд - Кой уши байрака",
+                "https://firebasestorage.googleapis.com/v0/b/bulgarianparty-5acf8.appspot.com/o/%D0%A1%D0%BB%D0%B0%D0%B2%D0%B8%20%D0%B8%20%D0%9A%D1%83-%D0%9A%D1%83%20%D0%91%D0%B5%D0%BD%D0%B4%20-%20%D0%9A%D0%BE%D0%B9%20%D1%83%D1%88%D0%B8%20%D0%B1%D0%B0%D0%B9%D1%80%D0%B0%D0%BA%D0%B0.mp3?alt=media&token=0c3dc182-3407-4a91-bae8-c10d17145209",
+                "https://firebasestorage.googleapis.com/v0/b/bulgarianparty-5acf8.appspot.com/o/%D0%A1%D0%BB%D0%B0%D0%B2%D0%B8%20%D0%B8%20%D0%9A%D1%83-%D0%9A%D1%83%20%D0%91%D0%B5%D0%BD%D0%B4%20-%20%D0%9A%D0%BE%D0%B9%20%D1%83%D1%88%D0%B8%20%D0%B1%D0%B0%D0%B9%D1%80%D0%B0%D0%BA%D0%B0%20(instrumental).mp3?alt=media&token=58178ae2-ea26-4a2b-890a-443b659024b6"));
 
         Map<Integer, String> lyricsTurnovskaCarica = new HashMap<>();
 
@@ -84,6 +78,7 @@ public class DownloadMusic {
                 + "последния български цар-\n"
                 + "Цар Иван Шишмана");
 
+
         Map<Integer, String> lyricsBqlaRoza = new HashMap<>();
         lyricsBqlaRoza.put(40000,"Бяла роза с росата ще закича в косата, да посрещна аз зората.\n");
         lyricsBqlaRoza.put(48000, "Бързо слънце да изгрее,\n да изгрее да залезе,\n че да ида на чешмата.\n");
@@ -94,7 +89,6 @@ public class DownloadMusic {
         lyricsBqlaRoza.put(73000, "Бяла роза ще закича,\n бяла роза с бодлите,\n но пази се ти пази се,\n");
         lyricsBqlaRoza.put(81000, "Бяла роза ще закича,\n бяла роза с бодлите,\n но пази се ти пази се,\n");
         lyricsBqlaRoza.put(89000, "");
-
 
         lyricsBqlaRoza.put(121000, "Снощи вечер на чешмата срещнах момък в позлата,\n с черни очи кат маслини\n");
         lyricsBqlaRoza.put(128000, "Яхна черно врано конче,\n чудни думи той ми рече,\n в любов ми се обрече.\n");
@@ -116,6 +110,7 @@ public class DownloadMusic {
         lyricsBqlaRoza.put(241000, "Бяла роза ще закича,\n бяла роза с бодлите,\n но пази се ти пази се,\n");
 
         lyricsBqlaRoza.put(249000, "Но пази се ти пази се,\n");
+
 
         Map<Integer, String> lyricsMomaQnica = new HashMap<>();
 
@@ -151,6 +146,7 @@ public class DownloadMusic {
         lyricsMomaQnica.put(252000,"Кой ще се намери хубост да премери, мома да спечели?\n");
         lyricsMomaQnica.put(259000,"");
 
+
         Map<Integer, String> lyricsKoiUshiBairqka = new HashMap<>();
 
         lyricsKoiUshiBairqka.put(30000, "Айде провикна се турския паша\nот Панагюрище,\n");
@@ -169,11 +165,13 @@ public class DownloadMusic {
         lyricsKoiUshiBairqka.put(214000, "\"Смърт или свобода\"!\n");
         lyricsKoiUshiBairqka.put(221000, "");
 
+
         List<Map<Integer, String>> lyrics = new ArrayList<>(4);
         lyrics.add(lyricsTurnovskaCarica);
         lyrics.add(lyricsBqlaRoza);
         lyrics.add(lyricsMomaQnica);
         lyrics.add(lyricsKoiUshiBairqka);
+
         for (int i = 0; i < cloudSongs.size(); i++) {
             List<Song> songCheck = db.getSongsByName(cloudSongs.get(i).getName());
 
